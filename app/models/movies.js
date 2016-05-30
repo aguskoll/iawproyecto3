@@ -2,16 +2,16 @@ var mongoose = require('mongoose'),
     Schema   = mongoose.Schema;
 
 var movieSchema = new Schema({
-    title:    { type: String },
-    fecha:     { type: Date },
-    directores:  { type: Array },
-    actores:  { type: Array },
-    sinopsis:  { type: String },
-    duracion:   {type: Number},
-    calificaciones: {type: Number},
-    valoracion: {type: Number},
-    ref: [Schema.Types.ObjectId],
-    referencias: {type: Array }
+    title:    String ,
+    fecha:    Date ,
+    directores: [String ],
+    actores:  [String],
+    sinopsis: String,
+    duracion:   Number,
+    calificaciones: Number,
+    valoracion: Number,
+    refe: [Schema.Types.ObjectId],
+    referencias:  [String]
 });
 
-module.exports = mongoose.model('movie', movieSchema);
+module.exports = mongoose.model('Movies', movieSchema);
