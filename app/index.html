@@ -1,27 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" ng-app>
+<html lang="en" ng-app="library">
 
 <head>
     <meta charset="UTF-8">
-    <title>Ej de AngularJS</title>
+    <title>Movie library</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 </head>
 
-<body>
-<h1>Hola {{nombre}}</h1>
-<div class="contenedor">
-    <form action="">
-        ¿Cómo te llamas? <input type="text" ng-model="nombre">
-    </form>
-</div>
+<body ng-controller="MoviesController as moviesCtrl">
+    <ul class="list-group">
+        <li class="list-group-item" ng-repeat="peli in moviesCtrl.peliculas">
+            <h1>{{peli.title}}</h1>
+            <h2>{{peli.sinopsis}}</h2>
+        </li>
+    </ul>
 
-<div ng-app>
-    <input type="text" ng-model="dato" />
-    {{dato}}
-    <input type="button" value="hola" ng-click="dato='hola'" />
-</div>
-
-<script src="view1/view1.js"></script>
-<script src="view2/view2.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+<script src="config/env.js"> </script>
+<script src="app.js"></script>
 </body>
 </html>

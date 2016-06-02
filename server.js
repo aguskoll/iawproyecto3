@@ -16,6 +16,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride());
 
+app.use(function (req,res,next) {
+    res.header('Access-Control-Allow-Origin',"*");
+    res.header('Access-Control-Allow-Methods','GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers','Content-Type');
+    next();
+});
+
 // Import Models and controllers
 var models     = require('./app/models/movies')(app, mongoose);
 var moviesCtrl = require('./app/controllers/movies');
