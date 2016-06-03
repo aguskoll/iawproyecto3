@@ -26,6 +26,7 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
 
         var pelis = this;
         this.peliculas =  [ ];
+        this.seleccionada = 0;
 
         $http({
             method: 'GET',
@@ -38,7 +39,15 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
             // or server returns response with an error status.
         });
 
+        this.selectFilm = function (seleccionada) {
+            this.seleccionada = seleccionada;
+        };
+
     }]);
+
+    app.controller('SelectionController',function(){
+
+    });
 
 
 })();
