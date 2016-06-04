@@ -1,46 +1,30 @@
-/*'use strict';
 
-// Declare app level module which depends on views, and components
-angular.module('myApp', [
-  'ngRoute',
-  'myApp.view1',
-  'myApp.view2',
-  'myApp.version'
-]).
-config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
-  $locationProvider.hashPrefix('!');
+'use config/env.js';
 
-  $routeProvider.otherwise({redirectTo: '/view1'});
-}]);*/
-'use strict';
 (function(){
+    var urlServer=getUrlServer();
     //Variables de ambiente
-    angular.module('library', ['ngRoute'])
-        var __env = {};
-        if(window){
-            Object.assign(__env, window.__env);
-        }
-        constant('__env',__env)
+   var app= angular.module('library', ['ngRoute']);
 
 
-
-        .config(['$routeProvider', function($routeProvider) {
-            $routeProvider
-
-                .when('/crearPelicula', {
-                    templateUrl: 'vistas/paginas/peliculas/crear.html'
-                })
-                .when('/eliminarPelicula', {
+    app.config(['$routeProvider', function($routeProvider) {
+            $routeProvider.when('/crearPelicula', {
+                    templateUrl: 'vistas/paginas/peliculas/crear.html',
+                     controller: 'CrearPeliculas'
+                });
+            $routeProvider.when('/eliminarPelicula', {
                     templateUrl: 'vistas/paginas/peliculas/eliminar.html'
 
-                })
-                .otherwise({
+
+                });
+            $routeProvider.otherwise({
+               
                         redirectTo:'/index.html'
                     }
                 )
         }])
 
-            .controller('MoviesController', ['$http', '$log', '__env', function($http,$log,__env){
+    app.controller('MoviesController', ['$http', '$log', function($http,$log){
 
             var pelis = this;
             this.peliculas =  [ ];
@@ -48,7 +32,7 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
 
             $http({
                 method: 'GET',
-                url: __env.apiUrl + '/api/movies'
+                url: urlServer + '/api/movies'
             }).then(function successCallback(response) {
                 $log.log(response.data);
                 pelis.peliculas = response.data;
@@ -63,10 +47,27 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
 
     }])
 
-    .controller('SelectionController',function(){
+    app.controller('SelectionController',function(){
 
     })
 
+
+    app.controller('CrearPeliculas', ['$http',function ($http) {
+
+         var crear=this;
+
+         //inicializo un objeto en los datos de formulario
+         crear.pelicula = {};
+         crear.addPelicula = function(){
+             console.log('entre a crear'+crear.pelicula);
+             $http.post(urlServer+'/api/movies', crear.pelicula)
+                 .success(function(res){
+             console.log(res);
+
+         });
+     };
+
+     }]);
 
     
 })();

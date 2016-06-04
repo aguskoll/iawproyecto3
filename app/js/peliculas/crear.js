@@ -1,20 +1,27 @@
 
-  'use strict';
 
-  angular.module('myApp.crear', [])
+  'use config/env.js';
+
+  var urlServer=getUrlServer();
+  (function(){
+      var app=angular.module('ModuloCrearPelicula',[]);
     /*
-      .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/view1', {
-          templateUrl: 'view1/crear.html',
-          controller: 'CrearPeliculasCtrl'
-        });
-      }])
-    */
-      .controller('CrearPeliculas', [function () {
+      app.controller('CrearPeliculas', ['$http',function ($http) {
 
+          var crear=this;
 
-          this.addPelicula = function(pelicula){
+          //inicializo un objeto en los datos de formulario
+          crear.pelicula = {};
+          crear.addPelicula = function(){
+              console.log('entre a crear'+crear.pelicula);
+              $http.post(urlServer+'/api/movies', crear.pelicula)
+                  .success(function(res){
+                      console.log(res);
 
+                  });
           };
 
       }]);
+    */
+console.log('entre al modulo crear ');
+      })();

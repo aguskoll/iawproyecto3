@@ -28,3 +28,22 @@
   content: "";
   padding: 0;
 }
+
+.ng-invalid.ng-dirty{
+  border-color:red;
+}
+.ng-valid.ng-dirty{
+  border-color:green;
+}
+
+.messages {
+  color: #FA787E;
+}
+
+form.ng-submitted input.ng-invalid{
+  border-color: #FA787E;
+}
+
+form input.ng-invalid.ng-touched {
+  border-color: #FA787E;
+}

@@ -1,22 +1,76 @@
-
-<form name="crearPeliculasForm" ng-controller="CrearPeliculas as crearCtrl" ng-submit="crearCtrl.addPelicula(pelicula)">
+<!--div  ng-app="ModuloCrearPelicula"-->
+<h4>Agregar una pelicula</h4>
+<form name="crearPeliculasForm" ng-controller="CrearPeliculas as crearCtrl"
+      ng-submit="crearPeliculasForm.$valid&&crearCtrl.addPelicula()" novalidate>
 
 
 
     <!--  Review Form -->
-    <h4>Agregar una pelicula</h4>
-    <fieldset class="form-group">
-        <select ng-model="crearCtrl.pelicula.valoracion" class="form-control" ng-options="valoracion in [5,4,3,2,1]" title="Valoracion">
-            <option value>Valora la pelicula</option>
+
+    <!--fieldset class="form-group">
+        <select-- ng-model="crearCtrl.pelicula.valoracion" class="form-control" ng-options="stars for stars in [5,4,3,2,1]" title="Stars">
+            Valora la pelicula  <option value></option>
         </select>
+    </fieldset-->
+    <fieldset class="form-group" required>
+        Titulo:
+        <textarea ng-model="crearCtrl.pelicula.title" class="form-control" placeholder="titulo" title="title" name="title"  required="required"  />
+        </textarea>
+        <span ng-show="userForm.crearPeliculasForm.$error.required">El campo es obligatorio.</span>
+
+
     </fieldset>
+
+    <fieldset class="form-group" required>
+     Sinopsis:
+        <textarea ng-model="crearCtrl.pelicula.sinopsis" class="form-control" placeholder="Describi brevemente la pelicula: " name="sinopsis" title="sinopsis" required="required"/>
+        </textarea>
+
+    </fieldset>
+    <span class="messages" ng-show="crearPeliculasForm.$submitted || crearPeliculasForm.sinopsis.$touched">
+        </span>
+    <span ng-show="userForm.crearPeliculasForm.$error.required">El campo es obligatorio.</span>
+
+
     <fieldset class="form-group">
-        <textarea ng-model="crearCtrl.pelicula.sinopsis" class="form-control" placeholder="Describi brevemente la pelicula: " title="Sinopsis"></textarea>
+        Directores:
+        <textarea ng-model="crearCtrl.pelicula.directores" class="form-control" name="directores" placeholder="" title="Directores" />
+        </textarea>
     </fieldset>
+
     <fieldset class="form-group">
-        <input ng-model="crearCtrl.pelicula.titulo" class="form-control" placeholder="" title="Titulo" />
+        Actores: <textarea ng-model="crearCtrl.pelicula.actores" class="form-control" name="actores" placeholder="" title="Actores" />
+                    </textarea>
     </fieldset>
+
     <fieldset class="form-group">
-        <input type="submit" class="btn btn-primary pull-right" value="Crear pelicula" />
+        Duracion:
+        <input ng-model="crearCtrl.pelicula.duracion" class="form-control" name="duracion" placeholder="" title="Duracion" type="number" />
+        </input>
     </fieldset>
+
+    <fieldset class="form-group">
+        fecha: <input ng-model="crearCtrl.pelicula.fecha" class="form-control" name="fecha" placeholder="" title="fecha" type="date" />
+    </fieldset>
+
+    <!--fieldset class="form-group">
+        calificaciones: <input ng-model="crearCtrl.pelicula.calificaciones" class="form-control" placeholder="" title="calificaciones" />
+    </--fieldset-->
+    <fieldset class="form-group">
+        Referencias:
+        <textarea ng-model="crearCtrl.pelicula.referencias" class="form-control" name="referencias" placeholder="" title="referencias" />
+        </textarea>
+    </fieldset>
+
+    <fieldset class="form-group">
+        <input type="submit" class="btn btn-primary pull-right" value="Crear pelicula" ng-disabled=crearPeliculasForm.$invalid/>
+    </fieldset>
+
 </form>
+
+
+
+
+
+
+
