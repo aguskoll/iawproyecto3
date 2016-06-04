@@ -1,0 +1,22 @@
+
+<form name="crearPeliculasForm" ng-controller="CrearPeliculas as crearCtrl" ng-submit="crearCtrl.addPelicula(pelicula)">
+
+
+
+    <!--  Review Form -->
+    <h4>Agregar una pelicula</h4>
+    <fieldset class="form-group">
+        <select ng-model="crearCtrl.pelicula.valoracion" class="form-control" ng-options="valoracion in [5,4,3,2,1]" title="Valoracion">
+            <option value>Valora la pelicula</option>
+        </select>
+    </fieldset>
+    <fieldset class="form-group">
+        <textarea ng-model="crearCtrl.pelicula.sinopsis" class="form-control" placeholder="Describi brevemente la pelicula: " title="Sinopsis"></textarea>
+    </fieldset>
+    <fieldset class="form-group">
+        <input ng-model="crearCtrl.pelicula.titulo" class="form-control" placeholder="" title="Titulo" />
+    </fieldset>
+    <fieldset class="form-group">
+        <input type="submit" class="btn btn-primary pull-right" value="Crear pelicula" />
+    </fieldset>
+</form>
