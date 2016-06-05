@@ -24,13 +24,15 @@
                 )
         }]);
 
-    app.controller('MoviesController', ['$http', '$log', function($http,$log){
+    app.controller('MoviesController', ['$http', '$log', '$scope', function($http,$log,$scope){
 
             var pelis = this;
             this.peliculas =  [ ];
             this.seleccionada = null;
             this.clave ='';
             this.invertir = false;
+
+            $scope.filtroSeleccionado = 'title';
 
             $http({
                 method: 'GET',
@@ -69,6 +71,11 @@
 
             this.haySeleccionada = function () {
                 return this.seleccionada != null;
+            };
+
+            $scope.cambiarFiltro = function(){
+
+              $log.log($scope.filtroSeleccionado);
             };
 
     }]);
