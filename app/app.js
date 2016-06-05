@@ -22,13 +22,15 @@
                         redirectTo:'/index.html'
                     }
                 )
-        }])
+        }]);
 
     app.controller('MoviesController', ['$http', '$log', function($http,$log){
 
             var pelis = this;
             this.peliculas =  [ ];
-            this.seleccionada = 0;
+            this.seleccionada = null;
+            this.clave ='';
+            this.invertir = false;
 
             $http({
                 method: 'GET',
@@ -41,15 +43,39 @@
                 // or server returns response with an error status.
             });
 
+            this.ordenar = function (clave){
+                $log.log(clave);
+                this.clave = clave;
+                this.invertir = !this.invertir;
+            };
+
+            this.getClave = function () {
+                return this.clave;
+            };
+
+            this.getInvertir = function () {
+                return this.invertir;
+            };
+
+            this.linkIsSelected = function (clave) {
+                return this.clave == clave;
+            };
+
+
             this.selectFilm = function (seleccionada) {
+                $log.log(seleccionada);
                 this.seleccionada = seleccionada;
             };
 
-    }])
+            this.haySeleccionada = function () {
+                return this.seleccionada != null;
+            };
+
+    }]);
 
     app.controller('SelectionController',function(){
 
-    })
+    });
 
 
     app.controller('CrearPeliculas', ['$http',function ($http) {
