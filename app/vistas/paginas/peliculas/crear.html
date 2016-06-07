@@ -1,76 +1,107 @@
 <!--div  ng-app="ModuloCrearPelicula"-->
 <h4>Agregar una pelicula</h4>
-<form name="crearPeliculasForm" ng-controller="CrearPeliculas as crearCtrl"
-      ng-submit="crearPeliculasForm.$valid&&crearCtrl.addPelicula()" novalidate>
+<div  ng-cloack>
+    <form name="crearPeliculasForm" ng-controller="CrearPeliculas as crearCtrl"
+          ng-submit="crearPeliculasForm.$valid&&crearCtrl.addPelicula()" novalidate>
 
 
-
-    <!--  Review Form -->
-
-    <!--fieldset class="form-group">
-        <select-- ng-model="crearCtrl.pelicula.valoracion" class="form-control" ng-options="stars for stars in [5,4,3,2,1]" title="Stars">
-            Valora la pelicula  <option value></option>
-        </select>
-    </fieldset-->
-    <fieldset class="form-group" required>
-        Titulo:
-        <textarea ng-model="crearCtrl.pelicula.title" class="form-control" placeholder="titulo" title="title" name="title"  required="required"  />
-        </textarea>
-        <span ng-show="userForm.crearPeliculasForm.$error.required">El campo es obligatorio.</span>
-
-
-    </fieldset>
-
-    <fieldset class="form-group" required>
-     Sinopsis:
-        <textarea ng-model="crearCtrl.pelicula.sinopsis" class="form-control" placeholder="Describi brevemente la pelicula: " name="sinopsis" title="sinopsis" required="required"/>
-        </textarea>
-
-    </fieldset>
-    <span class="messages" ng-show="crearPeliculasForm.$submitted || crearPeliculasForm.sinopsis.$touched">
-        </span>
-    <span ng-show="userForm.crearPeliculasForm.$error.required">El campo es obligatorio.</span>
-
-
-    <fieldset class="form-group">
-        Directores:
-        <textarea ng-model="crearCtrl.pelicula.directores" class="form-control" name="directores" placeholder="" title="Directores" />
-        </textarea>
-    </fieldset>
-
-    <fieldset class="form-group">
-        Actores: <textarea ng-model="crearCtrl.pelicula.actores" class="form-control" name="actores" placeholder="" title="Actores" />
-                    </textarea>
-    </fieldset>
-
-    <fieldset class="form-group">
-        Duracion:
-        <input ng-model="crearCtrl.pelicula.duracion" class="form-control" name="duracion" placeholder="" title="Duracion" type="number" />
+        <fieldset class="form-group">
+            Titulo:
+        <input ng-model="crearCtrl.pelicula.title"
+                  ng-change="cambio()"
+                  class="form-control" placeholder="titulo"
+                  title="title" name="title"
+                  ng-value="peliculaReferencia.Title"
+                  required>
+    <span ng-show="!crearPeliculasForm.$pristine &&crearPeliculasForm.title.$error.required">El titulo es requerido</span>
         </input>
-    </fieldset>
+   </fieldset>
 
-    <fieldset class="form-group">
-        fecha: <input ng-model="crearCtrl.pelicula.fecha" class="form-control" name="fecha" placeholder="" title="fecha" type="date" />
-    </fieldset>
+        <fieldset class="form-group" >
+            Sinopsis:
+            <input ng-model="crearCtrl.pelicula.sinopsis" class="form-control"
+                   ng-value="peliculaReferencia.Plot" name="sinopsis"
+                   title="sinopsis" >
+        </input>
+            <!--span ng-show="!crearPeliculasForm.$pristine &&crearPeliculasForm.sinopsis.$error.required">La descripcion de la pelicula es requerida</--span-->
+        </fieldset>
 
-    <!--fieldset class="form-group">
-        calificaciones: <input ng-model="crearCtrl.pelicula.calificaciones" class="form-control" placeholder="" title="calificaciones" />
-    </--fieldset-->
-    <fieldset class="form-group">
-        Referencias:
-        <textarea ng-model="crearCtrl.pelicula.referencias" class="form-control" name="referencias" placeholder="" title="referencias" />
+
+
+        <fieldset class="form-group">
+            Directores:
+        <input ng-model="crearCtrl.pelicula.directores" class="form-control"
+                  name="directores" ng-value="peliculaReferencia.Director" title="Directores"
+                  placeholder="Ingrese el/los directores de la pelicula">
+        </input>
+        </fieldset>
+
+        <fieldset class="form-group">
+            Actores: <input ng-model="crearCtrl.pelicula.actores" class="form-control"
+                               name="actores" placeholder="Daniel Radcliffe" title="Actores"
+                               ng-value="peliculaReferencia.Actors">
+                    </input>
+        </fieldset>
+
+        <fieldset class="form-group">
+            Duracion:
+            <input ng-model="crearCtrl.pelicula.duracion" class="form-control" name="duracion"
+                   placeholder="120 min" title="Duracion"  ng-value="peliculaReferencia.Runtime">
+            </input>
+        </fieldset>
+
+        <fieldset class="form-group">
+            Año de estreno: <input ng-model="crearCtrl.pelicula.fecha" class="form-control" name="fecha"
+                          ng-value="peliculaReferencia.Year"
+                          placeholder="1990"   title="fecha" />
+
+        </fieldset>
+
+
+
+        <fieldset class="form-group">
+            Plabras claves:
+        <textarea ng-model="crearCtrl.pelicula.referencias" class="form-control"
+                  name="referencias" placeholder="magia ciencia ficcion"
+                  title="referencias">
         </textarea>
-    </fieldset>
 
-    <fieldset class="form-group">
-        <input type="submit" class="btn btn-primary pull-right" value="Crear pelicula" ng-disabled=crearPeliculasForm.$invalid/>
-    </fieldset>
-
-</form>
+            <!--div layout="column" ng-cloak>
 
 
+                <p>Buscar por titulo</p>
+                <input class="filtro" type="text" ng-change="cambio()"
+                       ng-model="tituloPelicula">{{tituloPelicula}} </input>
+
+                <P>
+                    <strong> {{ peliculaReferencia.Title}} </strong>
+                </P>
+
+                <p>
+                    <strong>{{peliculaReferencia.Director}}</strong>
+                <p>
+                <p>
+                    <strong>{{peliculaReferencia.Genre}}</strong>
+                </p>
+
+                <p>
+                    <strong>{{peliculaReferencia.Plot}}</strong>
+                </p>
+
+                <p>
+                    <strong>{{peliculaReferencia.Year}}</strong>
+                </p>
 
 
+            </--div-->
 
+        </fieldset>
 
+        <fieldset class="form-group">
+            <input type="submit" class="btn btn-primary pull-right" value="Crear pelicula"
+                   ng-click="showAlert($event)" ng-disabled="!crearPeliculasForm.$valid"/>
 
+        </fieldset>
+
+    </form>
+</div>

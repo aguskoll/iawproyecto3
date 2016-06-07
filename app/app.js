@@ -22,17 +22,13 @@
                         redirectTo:'/index.html'
                     }
                 )
-        }]);
+        }])
 
-    app.controller('MoviesController', ['$http', '$log', '$scope', function($http,$log,$scope){
+    app.controller('MoviesController', ['$http', '$log', function($http,$log){
 
             var pelis = this;
             this.peliculas =  [ ];
-            this.seleccionada = null;
-            this.clave ='';
-            this.invertir = false;
-
-            $scope.filtroSeleccionado = 'title';
+            this.seleccionada = 0;
 
             $http({
                 method: 'GET',
@@ -45,63 +41,60 @@
                 // or server returns response with an error status.
             });
 
-            this.ordenar = function (clave){
-                $log.log(clave);
-                this.clave = clave;
-                this.invertir = !this.invertir;
-            };
-
-            this.getClave = function () {
-                return this.clave;
-            };
-
-            this.getInvertir = function () {
-                return this.invertir;
-            };
-
-            this.linkIsSelected = function (clave) {
-                return this.clave == clave;
-            };
-
-
             this.selectFilm = function (seleccionada) {
-                $log.log(seleccionada);
                 this.seleccionada = seleccionada;
             };
 
-            this.haySeleccionada = function () {
-                return this.seleccionada != null;
-            };
-
-            $scope.cambiarFiltro = function(){
-
-              $log.log($scope.filtroSeleccionado);
-            };
-
-    }]);
+    }])
 
     app.controller('SelectionController',function(){
 
-    });
+    })
 
 
-    app.controller('CrearPeliculas', ['$http',function ($http) {
+ 
 
-         var crear=this;
+    app.controller('CrearPeliculas', ['$http','$scope','$log',function ($http,$scope,$log) {
 
-         //inicializo un objeto en los datos de formulario
-         crear.pelicula = {};
-         crear.addPelicula = function(){
-             console.log('entre a crear'+crear.pelicula);
-             $http.post(urlServer+'/api/movies', crear.pelicula)
-                 .success(function(res){
-             console.log(res);
+        var crear=this;
 
-         });
-     };
+        //inicializo un objeto en los datos de formulario
+        crear.pelicula = {};
+        crear.addPelicula = function(){
+            console.log('entre a crear'+crear.pelicula);
+            $http.post(urlServer+'/api/movies', crear.pelicula).success(function(res){
+                console.log(res);
 
-     }]);
+            });
+        };
 
-    
+        $scope.cambio=function(){
+
+            // var titulo = $scope.tituloPelicula;
+            var titulo=crear.pelicula.title;
+            var  peliculaReferencia={};
+
+            var url = "http://www.omdbapi.com/?t=" +
+                titulo +
+                "&y=&plot=short&r=json";
+            console.log("url a buscar " + url);
+
+            $http({
+                method: 'GET',
+                url: url,
+            }).then(function successCallback(response) {
+                $log.log(response.data.Title);
+                $scope.peliculaReferencia=response.data;
+            }, function errorCallback(response) {
+                $log.log(response);
+            });
+
+        }
+        $scope.status = '  ';
+
+        $scope.showAlert = function(ev) {
+            window.alert("pelicula creada");
+        }
+    }]);
 })();
 
