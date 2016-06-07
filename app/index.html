@@ -51,7 +51,7 @@
     </div>
 </div>
 
-<div class="row text-center">
+<div class="row text-center" ng-controller="ShowController as showCtrl">
 
     <nav class="navbar navbar-default" role="navigation">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -66,16 +66,16 @@
             <a class="navbar-brand" href="">Ordenar</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="navbar-collapse-2">
+        <div class="collapse navbar-collapse" id="navbar-collapse-2" >
             <ul class="nav navbar-nav">
-                <li ng-class = "{active: moviesCtrl.linkIsSelected('title')}">
-                    <a href ng-click="moviesCtrl.ordenar('title')">Titulo</a>
+                <li ng-class = "{active: showCtrl.linkIsSelected('title')}">
+                    <a href ng-click="showCtrl.ordenar('title')">Titulo</a>
                 </li>
                 <li ng-class = "{active: moviesCtrl.linkIsSelected('fecha')}">
-                    <a href ng-click="moviesCtrl.ordenar('fecha')">Fecha</a>
+                    <a href ng-click="showCtrl.ordenar('fecha')">Fecha</a>
                 </li>
                 <li ng-class = "{active: moviesCtrl.linkIsSelected('valoracion')}">
-                    <a href ng-click="moviesCtrl.ordenar('valoracion')">Puntaje</a>
+                    <a href ng-click="showCtrl.ordenar('valoracion')">Puntaje</a>
                 </li>
 
             </ul>
@@ -102,7 +102,7 @@
 
     <!-- Peliculas -->
     <div class="col-md-3 col-sm-6 miniatura"
-         ng-repeat="peli in moviesCtrl.peliculas|orderBy:moviesCtrl.getClave():moviesCtrl.getInvertir()|filter:{title:search}">
+         ng-repeat="peli in moviesCtrl.peliculas|orderBy:showCtrl.getClave():showCtrl.getInvertir()|filter:{title:search}">
         <div class="thumbnail">
             <img src="http://placehold.it/800x500" alt="">
             <div class="caption">

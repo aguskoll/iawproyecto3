@@ -26,13 +26,9 @@
 
     app.controller('MoviesController', ['$http', '$log', function($http,$log){
 
-
-
         var pelis = this;
         this.peliculas =  [ ];
         this.seleccionada = null;
-        this.clave ='';
-        this.invertir = false;
 
         $http({
             method: 'GET',
@@ -45,25 +41,6 @@
             // or server returns response with an error status.
         });
 
-        this.ordenar = function (clave){
-            $log.log(clave);
-            this.clave = clave;
-            this.invertir = !this.invertir;
-        };
-
-        this.getClave = function () {
-            return this.clave;
-        };
-
-        this.getInvertir = function () {
-            return this.invertir;
-        };
-
-        this.linkIsSelected = function (clave) {
-            return this.clave == clave;
-        };
-
-
         this.selectFilm = function (seleccionada) {
             $log.log(seleccionada);
             this.seleccionada = seleccionada;
@@ -75,8 +52,27 @@
 
     }]);
 
-    app.controller('SelectionController',function(){
+    app.controller('ShowController',function(){
+        this.clave ='';
+        this.invertir = false;
 
+        this.ordenar = function (clave){
+            //$log.log(clave);
+            this.clave = clave;
+            this.invertir = !this.invertir;
+        };
+
+        this.linkIsSelected = function (clave) {
+            return this.clave == clave;
+        };
+
+        this.getClave = function () {
+            return this.clave;
+        };
+
+        this.getInvertir = function () {
+            return this.invertir;
+        };
     });
 
 
