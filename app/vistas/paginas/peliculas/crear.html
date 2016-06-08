@@ -17,12 +17,15 @@
         </input>
    </fieldset>
 
-        <fieldset class="form-group" >
+        <fieldset class="form-group">
             Sinopsis:
-            <input ng-model="crearCtrl.pelicula.sinopsis" class="form-control"
+            <input ng-model="crearCtrl.pelicula.sinopsis"
+                   class="form-control"
+                   placeholder="Describi brevemente la pelicula: "
                    ng-value="peliculaReferencia.Plot" name="sinopsis"
-                   title="sinopsis" >
-        </input>
+                   title="sinopsis">
+                </input>
+
             <!--span ng-show="!crearPeliculasForm.$pristine &&crearPeliculasForm.sinopsis.$error.required">La descripcion de la pelicula es requerida</--span-->
         </fieldset>
 
@@ -99,7 +102,7 @@
 
         <fieldset class="form-group">
             <input type="submit" class="btn btn-primary pull-right" value="Crear pelicula"
-                   ng-click="showAlert($event)" ng-disabled="!crearPeliculasForm.$valid"/>
+                   ng-click="showAlert($event)" ng-disabled="!crearPeliculasForm.$valid" />
 
         </fieldset>
 
