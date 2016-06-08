@@ -35,7 +35,6 @@
             method: 'GET',
             url: urlServer + '/api/movies'
         }).then(function successCallback(response) {
-            $log.log(response.data);
             pelis.peliculas = response.data;
         }, function errorCallback(response) {
             // called asynchronously if an error occurs
@@ -44,7 +43,15 @@
 
         this.selectFilm = function (seleccionada) {
             $log.log(seleccionada);
-            this.seleccionada = seleccionada;
+            $http({
+                method: 'GET',
+                url: urlServer + '/api/movie/'+seleccionada
+            }).then(function successCallback(response) {
+                pelis.seleccionada  = response.data;
+            }, function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+            });
         };
 
         this.haySeleccionada = function () {
@@ -53,12 +60,17 @@
 
     }]);
 
-    app.controller('ShowController',function(){
+    app.controller('ShowController',function($location, $anchorScroll){
         this.clave ='';
         this.invertir = false;
 
+        this.scrollTo = function(id) {
+            $location.hash(id);
+            console.log($location.hash());
+            $anchorScroll();
+        };
+        
         this.ordenar = function (clave){
-            //$log.log(clave);
             this.clave = clave;
             this.invertir = !this.invertir;
         };

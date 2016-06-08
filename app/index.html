@@ -69,13 +69,13 @@
         <div class="collapse navbar-collapse" id="navbar-collapse-2" >
             <ul class="nav navbar-nav">
                 <li ng-class = "{active: showCtrl.linkIsSelected('title')}">
-                    <a href ng-click="showCtrl.ordenar('title')">Titulo</a>
+                    <a href ng-click="showCtrl.ordenar('title')">Titulo <span class="glyphicon sort-icon mysize" ng-show="showCtrl.getClave()=='title'" ng-class="{'glyphicon-chevron-up':!showCtrl.getInvertir(),'glyphicon-chevron-down':showCtrl.getInvertir()}"></span></a>
                 </li>
-                <li ng-class = "{active: moviesCtrl.linkIsSelected('fecha')}">
-                    <a href ng-click="showCtrl.ordenar('fecha')">Fecha</a>
+                <li ng-class = "{active: showCtrl.linkIsSelected('fecha')}">
+                    <a href ng-click="showCtrl.ordenar('fecha')">Fecha <span class="glyphicon sort-icon mysize" ng-show="showCtrl.getClave()=='fecha'" ng-class="{'glyphicon-chevron-up':!showCtrl.getInvertir(),'glyphicon-chevron-down':showCtrl.getInvertir()}"></span></a>
                 </li>
-                <li ng-class = "{active: moviesCtrl.linkIsSelected('valoracion')}">
-                    <a href ng-click="showCtrl.ordenar('valoracion')">Puntaje</a>
+                <li ng-class = "{active: showCtrl.linkIsSelected('valoracion')}">
+                    <a href ng-click="showCtrl.ordenar('valoracion')">Puntaje <span class="glyphicon sort-icon mysize" ng-show="showCtrl.getClave()=='valoracion'" ng-class="{'glyphicon-chevron-up':!showCtrl.getInvertir(),'glyphicon-chevron-down':showCtrl.getInvertir()}"></span></a>
                 </li>
 
             </ul>
@@ -109,7 +109,7 @@
                 <h3>{{peli.valoracion}}</h3>
                 <p>{{peli.sinopsis | limitTo : 20}}...</p>
                 <p>
-                    <a href="#pelicula" class="btn btn-default" ng-click="moviesCtrl.selectFilm(peli)">More Info</a>
+                    <a class="btn btn-default" ng-click="moviesCtrl.selectFilm(peli._id);showCtrl.scrollTo('pelicula')">More Info</a>
                 </p>
             </div>
         </div>
@@ -122,7 +122,8 @@
             boundary-links="true" >
     </dir-pagination-controls>
 <!-- Seleccionada -->
-<div id="pelicula" ng-show="moviesCtrl.haySeleccionada()">
+<div id="pelicula">
+<div ng-show="moviesCtrl.haySeleccionada()">
     <div class="row" >
         <div class="col-lg-12">
             <h1 class="page-header">{{moviesCtrl.seleccionada.title}}
@@ -167,9 +168,8 @@
         </div>
     </div>
     <!-- /Relacionadas -->
-
 </div>
-
+</div>
 <hr>
 <!-- Footer -->
 <footer>
