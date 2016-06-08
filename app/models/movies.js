@@ -7,7 +7,7 @@ var movieSchema = new Schema({
     directores: [String ],
     actores:  [String],
     sinopsis: String,
-    duracion:   Number,
+    duracion:   String,
     calificaciones: Number,
     valoracion: Number,
     refe: [Schema.Types.ObjectId],
