@@ -4,7 +4,8 @@
 (function(){
     var urlServer=getUrlServer();
     //Variables de ambiente
-   var app= angular.module('library', ['ngRoute']);
+   var app= angular.module('library', ['ngRoute','angularUtils.directives.dirPagination']);
+
 
 
     app.config(['$routeProvider', function($routeProvider) {
@@ -128,6 +129,7 @@
         return function(input,categoria,filtro) {
 
             var out = [];
+            //noinspection JSDuplicatedDeclaration
             var categoria = categoria || 'title';
             var filtro = filtro || '';
             if(filtro == '') {
