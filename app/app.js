@@ -121,5 +121,46 @@
         }
     }]);
 
+    app.filter('dinamicFilter', function($log) {
+
+        // In the return function, we must pass in a single parameter which will be the data we will work on.
+        // We have the ability to support multiple other parameters that can be passed into the filter optionally
+        return function(input,categoria,filtro) {
+
+            var out = [];
+            var categoria = categoria || 'title';
+            var filtro = filtro || '';
+            if(filtro == '') {
+                out = input;
+                $log.log(input);
+            }else {
+                angular.forEach(input, function (peli) {
+                    switch (categoria) {
+                        case "actores":
+                            for (var i = 0, len = peli.actores.length; i < len; i++) {
+                                if (peli.actores[i].startsWith(filtro)) {
+                                    out.push(peli);
+                                    break;
+                                }
+                            }
+                            break;
+                        case "directores":
+                            for (var i = 0, len = peli.directores.length; i < len; i++) {
+                                if (peli.directores[i].startsWith(filtro)) {
+                                    out.push(peli);
+                                    break;
+                                }
+                            }
+                            break;
+                        default:
+                            if (peli[categoria].startsWith(filtro)) {
+                                out.push(peli)
+                            }
+                    }
+                });
+            }
+            return out;
+        }
+    });
 })();
 

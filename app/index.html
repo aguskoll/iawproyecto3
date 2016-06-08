@@ -85,16 +85,15 @@
 
                     <i class="glyphicon glyphicon-search"></i>
                     <div class="form-group">
-                        <input type="text" ng-model="search" class="form-control" placeholder="filtrar">
+                        <input type="text" ng-model="filtro" class="form-control" placeholder="filtrar">
                     </div>
 
-                    <div class="input-group">
-                    <select class="form-control" ng-model="filtroSeleccionado" >
-                        <option value="title">Titulo</option>
-                        <option value="director">Director</option>
-                        <option value="actor">Actor</option>
+                    <select ng-model='filtroSeleccionado' class='form-control'>
+                        <option value="" selected>Titulo</option>
+                        <option value="directores">Director</option>
+                        <option value="actores">Actor</option>
                     </select>
-                    </div>
+
                 </form>
             </div>
         <!-- /.navbar-collapse -->
@@ -102,7 +101,7 @@
 
     <!-- Peliculas -->
     <div class="col-md-3 col-sm-6 miniatura"
-         ng-repeat="peli in moviesCtrl.peliculas|orderBy:showCtrl.getClave():showCtrl.getInvertir()|filter:{title:search}">
+         ng-repeat="peli in moviesCtrl.peliculas|orderBy:showCtrl.getClave():showCtrl.getInvertir()|dinamicFilter:filtroSeleccionado:filtro">
         <div class="thumbnail">
             <img src="http://placehold.it/800x500" alt="">
             <div class="caption">
