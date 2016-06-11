@@ -8,7 +8,9 @@
 
 
 
-    app.config(['$routeProvider', function($routeProvider) {
+    app.config(['$routeProvider', '$httpProvider',function($routeProvider, $httpProvider) {
+        $httpProvider.interceptors.push('myInterceptor');
+
             $routeProvider.when('/crearPelicula', {
                     templateUrl: 'vistas/paginas/peliculas/crear.html',
                      controller: 'CrearPeliculas'
@@ -304,6 +306,128 @@
 
     }
 
-    //--
+
+    //--autenticacion
+
+    app.factory('myInterceptor', ['auth','$log', function(auth,$log){
+
+        var myInterceptor = {
+            request: function(config) {
+                var token = auth.getToken();
+                if(config.url.indexOf(getUrlServer()+'/api') === 0 && token) {
+                    config.headers.Authorization = token;
+
+                };
+                return config;
+            },
+            response: function(response) {
+                if(response.config.url.indexOf(getUrlServer()+'/api/authenticate') === 0 && response.data.token) {
+                    $log.log('entro ' + response.data.token);
+                    auth.saveToken(response.data.token)
+                };
+                return response;
+            }
+        };
+
+        return myInterceptor;
+        /*    return {
+            // automatically attach Authorization header
+            request: function(config) {
+                var token = auth.getToken();
+                if(config.url.indexOf(getUrlServer()+'/api') === 0 && token) {
+                    config.headers.Authorization = 'Bearer ' + token;
+                }
+
+                return config;
+            },
+
+            // If a token was sent back, save it
+            response: function(res) {
+                $log.log('lalsadafksfjdaskfjdsklfjdsklfasjfdaskfj');
+                if(res.config.url.indexOf(getUrlServer()+'/api/authenticate') === 0 && res.data.token) {
+                    $log.log('entro');
+                    auth.saveToken(res.data.token);
+
+                }
+
+                return res;
+            }
+        }*/
+    }]);
+
+
+    app.service('user',['$http','auth',function($http,auth){
+        this.getQuote = function() {
+            return $http.get(getUrlServer() + '/api/me')
+        };
+
+
+        this.login = function(username, password) {
+           return $http.post(getUrlServer() + '/api/authenticate', {
+                name: username,
+                password: password
+            });
+        }
+
+    }]);
+
+    app.service('auth',['$window', function($window){
+        var self = this;
+        this.parseJwt = function(token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace('-', '+').replace('_', '/');
+            return JSON.parse($window.atob(base64));
+        };
+
+        this.saveToken = function(token) {
+            $window.localStorage['jwtToken'] = token;
+        };
+
+        this.getToken = function() {
+            return $window.localStorage['jwtToken'];
+        };
+
+        this.isAuthed = function() {
+            var token = self.getToken();
+            if(token) {
+                var params = self.parseJwt(token);
+                return Math.round(new Date().getTime() / 1000) <= params.exp;
+            } else {
+                return false;
+            }
+        };
+
+        this.logout = function() {
+            $window.localStorage.removeItem('jwtToken');
+        }
+    }]);
+
+    app.controller('AuthController', ['user','auth',function(user, auth){
+        var self = this;
+
+        function handleRequest(res) {
+            var token = res.data ? res.data.token : null;
+            if(token) { console.log('JWT:', token); }
+            self.message = res.data.message;
+        }
+
+        self.login = function(use,pass) {
+            user.login(use, pass)
+                .then(handleRequest, handleRequest)
+        };
+
+        self.getQuote = function() {
+            user.getQuote()
+                .then(handleRequest, handleRequest)
+        };
+        self.logout = function() {
+            auth.logout && auth.logout()
+        };
+        self.isAuthed = function() {
+            return auth.isAuthed ? auth.isAuthed() : false
+        }
+
+    }]);
+
 })();
 

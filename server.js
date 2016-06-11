@@ -2,7 +2,7 @@ var express = require("express"),
     app = express(),
     bodyParser  = require("body-parser"),
     methodOverride = require("method-override");
-    mongoose = require('mongoose');
+mongoose = require('mongoose');
 
 var jwt    = require('jsonwebtoken');
 var config = require('./app/js/config/config');
@@ -15,7 +15,6 @@ mongoose.connect(config.database, function(err, res) {
     }
 });
 
-
 app.set('claveSecreta', config.secret);
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -25,7 +24,7 @@ app.use(methodOverride());
 app.use(function (req,res,next) {
     res.header('Access-Control-Allow-Origin',"*");
     res.header('Access-Control-Allow-Methods','GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers','Content-Type');
+    res.header('Access-Control-Allow-Headers','X-Requested-With,content-type, Authorization');
     next();
 });
 
@@ -56,7 +55,8 @@ app.listen(3000, function() {
     console.log("Node server running on http://localhost:3000");
 });
 
-                                            /*AUTENTICACION*/
+
+/*AUTENTICACION
 app.get('/setup', function(req, res) {
 
     // create a sample user
@@ -74,7 +74,7 @@ app.get('/setup', function(req, res) {
         res.json({ success: true });
     });
 });
-
+ */
 // API AUTENTICATION ROUTES -------------------
 
 // route to authenticate a user (POST http://localhost:3000/api/authenticate)
@@ -90,7 +90,6 @@ movies.post('/authenticate', function(req, res) {
         if (!user) {
             res.json({ success: false, message: 'Error de autenticacion, contraseña o usuario erroneo' });
         } else if (user) {
-
             // chequeo de contraseña
             if (user.password != req.body.password) {
                 res.json({ success: false, message: 'Error de autenticacion, contraseña o usuario erroneo' });
@@ -113,18 +112,23 @@ movies.post('/authenticate', function(req, res) {
     });
 });
 
+movies.get('/me', ensureAuthorized, function(req, res) {
+    console.log(req.decoded);
+    res.json(req.decoded);
+});
 
-// route middleware
-movies.use(function(req, res, next) {
+function ensureAuthorized(req, res, next) {
 
-    //Busco el token en los parametros o header
-    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    var token = req.body.token || req.query.token || req.headers['x-access-token'] || req.headers["authorization"];
 
     //Decodifico el token
     if (token) {
         jwt.verify(token, app.get('claveSecreta'), function(err, decoded) {
             if (err) {
-                return res.json({ success: false, message: 'No puedo autenticar el token, es trucho o expiro' });
+                return res.status(403).send({
+                    success: false,
+                    message: err,
+                });
             } else {
                 req.decoded = decoded;
                 next();
@@ -138,16 +142,12 @@ movies.use(function(req, res, next) {
         });
 
     }
-});
+}
 
-// route to show a random message (GET http://localhost:8080/api/)
-movies.get('/index', function(req, res) {
-    res.json({ message: 'Welcome to the coolest API on earth!' });
-});
-
+/*
 // route to return all users (GET http://localhost:8080/api/users)
 movies.get('/users', function(req, res) {
     User.find({}, function(err, users) {
         res.json(users);
     });
-});
+});*/
