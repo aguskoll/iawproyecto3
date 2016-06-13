@@ -41,7 +41,7 @@
             <form class="navbar-form navbar-rigth navbar-inverse" role="login">
                 <div class="form-group" ng-show="!auth.isAuthed()">
                     <input type="text" ng-model="username" class="form-control" placeholder="Usuario">
-                    <input type="text" ng-model="password" class="form-control" placeholder="Contraseña">
+                    <input type="password" ng-model="password" class="form-control" placeholder="Contraseña">
                 </div>
                 <button type="submit" ng-click="auth.login(username,password)" ng-show="!auth.isAuthed()" class="btn btn-default">Login</button>
                 <button ng-click="auth.logout()" ng-show="auth.isAuthed()" class="btn btn-default">Logout</button>

@@ -362,7 +362,7 @@
 
         this.login = function(username, password) {
            return $http.post(getUrlServer() + '/api/authenticate', {
-                name: username,
+                username: username,
                 password: password
             });
         }

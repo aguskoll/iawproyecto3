@@ -5,7 +5,7 @@ var express = require("express"),
 mongoose = require('mongoose');
 
 var jwt    = require('jsonwebtoken');
-var config = require('./app/js/config/config');
+var config = require('./../js/config/config');
 
 mongoose.connect(config.database, function(err, res) {
     if(err) {
@@ -29,9 +29,9 @@ app.use(function (req,res,next) {
 });
 
 // Import Models and controllers
-var models     = require('./app/models/movies')(app, mongoose);
-var moviesCtrl = require('./app/controllers/movies');
-var User   = require('./app/models/user');
+var models     = require('./models/movies')(app, mongoose);
+var moviesCtrl = require('./controllers/movies');
+var User   = require('./models/user');
 
 var router = express.Router();
 
@@ -62,35 +62,14 @@ app.listen(3000, function() {
 });
 
 
-/*AUTENTICACION
-app.get('/setup', function(req, res) {
-
-    // create a sample user
-    var nick = new User({
-        name: 'Nick Rivera',
-        password: 'imDoctor',
-        admin: true
-    });
-
-    // save the sample user
-    nick.save(function(err) {
-        if (err) throw err;
-
-        console.log('User saved successfully');
-        res.json({ success: true });
-    });
-});
- */
 // API AUTENTICATION ROUTES -------------------
 
 // route to authenticate a user (POST http://localhost:3000/api/authenticate)
 movies.post('/authenticate', function(req, res) {
-
     // bucar usuario
     User.findOne({
         username: req.body.username
     }, function(err, user) {
-
         if (err) throw err;
 
         if (!user) {
@@ -116,11 +95,6 @@ movies.post('/authenticate', function(req, res) {
         }
 
     });
-});
-
-movies.get('/me', ensureAuthorized, function(req, res) {
-    console.log(req.decoded);
-    res.json(req.decoded);
 });
 
 function ensureAuthorized(req, res, next) {
@@ -150,10 +124,35 @@ function ensureAuthorized(req, res, next) {
     }
 }
 
-/*
+
 // route to return all users (GET http://localhost:8080/api/users)
 movies.get('/users', function(req, res) {
     User.find({}, function(err, users) {
         res.json(users);
     });
-});*/
+});
+
+
+app.get('/setup', function(req, res) {
+
+    // create a sample user
+    var nick = new User({
+        username: 'admin',
+        password: 'admin',
+        admin: true
+    });
+
+    // save the sample user
+    nick.save(function(err) {
+        if (err) throw err;
+
+        console.log('User saved successfully');
+        res.json({ success: true });
+    });
+});
+
+/*
+ movies.get('/me', ensureAuthorized, function(req, res) {
+ console.log(req.decoded);
+ res.json(req.decoded);
+ });*/
