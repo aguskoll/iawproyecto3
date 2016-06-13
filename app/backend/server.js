@@ -39,6 +39,10 @@ app.use(router);
 
 // API routes
 var movies = express.Router();
+var user = express.Router();
+
+user.route('/movie/:id').put(moviesCtrl.calificateMovie);
+app.use('/user',user);
 
 //comentari para sacar autorizacion
 movies.post('/movie',ensureAuthorized);
@@ -60,9 +64,6 @@ app.use('/api', movies);
 app.listen(3000, function() {
     console.log("Node server running on http://localhost:3000");
 });
-
-
-// API AUTENTICATION ROUTES -------------------
 
 // route to authenticate a user (POST http://localhost:3000/api/authenticate)
 movies.post('/authenticate', function(req, res) {
@@ -123,8 +124,6 @@ function ensureAuthorized(req, res, next) {
 
     }
 }
-
-
 // route to return all users (GET http://localhost:8080/api/users)
 movies.get('/users', function(req, res) {
     User.find({}, function(err, users) {

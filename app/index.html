@@ -37,8 +37,8 @@
                     <a href="#">Contact</a>
                 </li>
             </ul>
-            <div ng-controller="AuthController as auth">
-            <form class="navbar-form navbar-rigth navbar-inverse" role="login">
+            <div class="navbar-rigth navbar-inverse pull-right" ng-controller="AuthController as auth">
+            <form class="navbar-form " role="login">
                 <div class="form-group" ng-show="!auth.isAuthed()">
                     <input type="text" ng-model="username" class="form-control" placeholder="Usuario">
                     <input type="password" ng-model="password" class="form-control" placeholder="Contraseña">
@@ -137,9 +137,13 @@
 <div ng-show="moviesCtrl.haySeleccionada()">
     <div class="row" >
         <div class="col-lg-12">
-            <h1 class="page-header">{{moviesCtrl.seleccionada.title}}
-                <small>{{moviesCtrl.seleccionada.valoracion}} <i class="glyphicon glyphicon-star"></i></small>
-            </h1>
+            <h1 class="page-header">{{moviesCtrl.seleccionada.title}}</h1>
+            <h2>Calificacion: {{ (moviesCtrl.seleccionada.valoracion != null) ?  (moviesCtrl.seleccionada.valoracion/moviesCtrl.seleccionada.calificaciones) : 0   }}  <span class="glyphicon glyphicon-star" aria-hidden="true"></span> </h2>
+            <h3 ng-show="true">Calificar:
+                <div>
+                    <uib-rating read-only="isReadonly" ng-model="rate" max="5" on-hover="moviesCtrl.hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three','four','five']" aria-labelledby="default-rating" ng-click="moviesCtrl.setRating(rate)}"></uib-rating>
+                </div>
+            </h3>
         </div>
     </div>
 

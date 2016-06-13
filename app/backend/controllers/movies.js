@@ -71,6 +71,20 @@ exports.updateMovie = function(req, res) {
     });
 };
 
+//PUT - Update a register already exists
+exports.calificateMovie = function(req, res) {
+    Movie.findById(req.params.id, function(err, movie) {
+        movie.calificaciones = (movie.calificaciones|| 0) +1;
+        movie.valoracion =req.body.valoracion + (movie.valoracion || 0);
+
+        movie.save(function(err) {
+            if(err) return res.status(500).send(err.message);
+            res.status(200).jsonp(movie);
+        });
+    });
+};
+
+
 //DELETE - Delete a movie with specified ID
 exports.deleteMovie = function(req, res) {
     Movie.findById(req.params.id, function(err, movie) {

@@ -31,6 +31,17 @@
         this.peliculas =  [ ];
         this.seleccionada = null;
 
+        this.hoveringOver = function(value) {
+            this.overStar = value;
+        };
+
+        this.setRating = function(valor){
+            return $http.put(getUrlServer() + '/user/movie/' + pelis.seleccionada._id, {
+                valoracion: valor
+            });
+            
+        };
+
         $http({
             method: 'GET',
             url: urlServer + '/api/movies'
@@ -48,6 +59,7 @@
                 url: urlServer + '/api/movie/'+seleccionada
             }).then(function successCallback(response) {
                 pelis.seleccionada  = response.data;
+                pelis.rate = pelis.seleccionada.valoracion;
             }, function errorCallback(response) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
@@ -88,8 +100,6 @@
         };
     });
 
-
- 
 
     app.controller('CrearPeliculas', ['$http','$scope','$log',function ($http,$scope,$log) {
 
