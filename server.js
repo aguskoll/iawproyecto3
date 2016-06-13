@@ -40,6 +40,12 @@ app.use(router);
 // API routes
 var movies = express.Router();
 
+//comentari para sacar autorizacion
+movies.post('/movie',ensureAuthorized);
+movies.put('/movie',ensureAuthorized);
+movies.delete('/movie',ensureAuthorized);
+movies.post('/movies',ensureAuthorized);
+
 movies.route('/movies')
     .get(moviesCtrl.findAllMovies)
     .post(moviesCtrl.addMovie);
@@ -82,7 +88,7 @@ movies.post('/authenticate', function(req, res) {
 
     // bucar usuario
     User.findOne({
-        name: req.body.name
+        username: req.body.username
     }, function(err, user) {
 
         if (err) throw err;
@@ -96,7 +102,7 @@ movies.post('/authenticate', function(req, res) {
             } else {
                 //Creo el token
                 var token = jwt.sign(user, app.get('claveSecreta'), {
-                    expiresIn: 120 //Valido por 2 horas
+                    expiresIn: "2h" //Valido por 2 horas
                 });
 
                 //Retorno informcacion y token

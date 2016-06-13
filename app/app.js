@@ -4,9 +4,7 @@
 (function(){
     var urlServer=getUrlServer();
     //Variables de ambiente
-   var app= angular.module('library', ['ngRoute','angularUtils.directives.dirPagination']);
-
-
+   var app= angular.module('library', ['ngRoute','angularUtils.directives.dirPagination','ui.bootstrap']);
 
     app.config(['$routeProvider', '$httpProvider',function($routeProvider, $httpProvider) {
         $httpProvider.interceptors.push('myInterceptor');

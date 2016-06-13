@@ -17,7 +17,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <button type="button" class="navbar-toggle" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -25,7 +25,7 @@
             </button>
             <a class="navbar-brand" href="#">Libreria de peliculas </a>
         </div>
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <div class="navbar-collapse collapse" ng-class="!navCollapsed && 'in'">
             <ul class="nav navbar-nav">
                 <li>
                     <a href="#/crearPelicula">Agregar pelicula</a>
@@ -37,11 +37,19 @@
                     <a href="#">Contact</a>
                 </li>
             </ul>
+            <div ng-controller="AuthController as auth">
+            <form class="navbar-form navbar-rigth navbar-inverse" role="login">
+                <div class="form-group" ng-show="!auth.isAuthed()">
+                    <input type="text" ng-model="username" class="form-control" placeholder="Usuario">
+                    <input type="text" ng-model="password" class="form-control" placeholder="Contraseña">
+                </div>
+                <button type="submit" ng-click="auth.login(username,password)" ng-show="!auth.isAuthed()" class="btn btn-default">Login</button>
+                <button ng-click="auth.logout()" ng-show="auth.isAuthed()" class="btn btn-default">Logout</button>
+            </form>
+            </div>
         </div>
     </div>
 </nav>
-
-<hr>
 
 <div class="container">
 
@@ -59,7 +67,7 @@
     <nav class="navbar navbar-default" role="navigation">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-2">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" ng-init="nav2Collapsed = true" ng-click="nav2Collapsed = !nav2Collapsed">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -69,7 +77,7 @@
             <a class="navbar-brand" href="">Ordenar</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="navbar-collapse-2" >
+        <div class="navbar-collapse collapse" ng-class="!nav2Collapsed && 'in'">
             <ul class="nav navbar-nav">
                 <li ng-class = "{active: showCtrl.linkIsSelected('title')}">
                     <a href ng-click="showCtrl.ordenar('title')">Titulo <span class="glyphicon sort-icon mysize" ng-show="showCtrl.getClave()=='title'" ng-class="{'glyphicon-chevron-up':!showCtrl.getInvertir(),'glyphicon-chevron-down':showCtrl.getInvertir()}"></span></a>
@@ -174,24 +182,6 @@
 </div>
 </div>
 <hr>
-
-    <div ng-controller="AuthController as main">
-        <h1>Simple Angular Auth - Thinkster</h1>
-
-        <input type="text" ng-model="username" placeholder="username"><br>
-        <input type="password" ng-model="password" placeholder="password"><br>
-        <br>
-
-        <button ng-click="main.login(username,password)">Login</button>
-        <button ng-click="main.getQuote()" ng-show="main.isAuthed()">Logout</button>
-
-        <button ng-click="main.getQuote()">get quote</button>
-        <br><br>
-        {{main.message}}
-
-        <br><br><br>
-        <a href="https://twitter.com/IAmMattGreen">shameless plug</a>
-    </div>
 <!-- Footer -->
 <footer>
     <div class="row">
@@ -206,10 +196,11 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-route.js"></script>
 <script src="js/dirPagination.js"></script>
-<script src="js/jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<!--<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>-->
 <script src="js/config/env.js"> </script>
 <script src="js/peliculas/crear.js" type="text/javascript"></script>
+<script src="js/ui-bootstrap-tpls-1.3.3.min.js"></script>
 <script src="app.js"></script>
 
 </body>
