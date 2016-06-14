@@ -30,8 +30,10 @@ exports.findById = function(req, res) {
 exports.addMovie = function(req, res) {
     console.log('POST');
     console.log(req.body);
-
-    var mov = new Movie({
+    if(typeof req.body.title == 'undefined' || req.body.title==' ' || req.body.title==null){
+        return res.send(401, 'falta el titulo');
+    }
+        var mov = new Movie({
         title:    req.body.title,
         fecha:    req.body.fecha,
         directores: req.body.directores,

@@ -31,7 +31,7 @@
                     <a href="#/crearPelicula">Agregar pelicula</a>
                 </li>
                 <li>
-                    <a href="#">Services</a>
+                    <a href="">Services</a>
                 </li>
                 <li>
                     <a href="#">Contact</a>
@@ -56,136 +56,6 @@
     <div ng-view> </div>
 
 <!-- Titulo -->
-<div class="row">
-    <div class="col-lg-12">
-        <h3>Peliculas</h3>
-    </div>
-</div>
-
-<div class="row text-center" ng-controller="ShowController as showCtrl">
-
-    <nav class="navbar navbar-default" role="navigation">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" ng-init="nav2Collapsed = true" ng-click="nav2Collapsed = !nav2Collapsed">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <!-- navbar-brand is hidden on larger screens, but visible when the menu is collapsed -->
-            <a class="navbar-brand" href="">Ordenar</a>
-        </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="navbar-collapse collapse" ng-class="!nav2Collapsed && 'in'">
-            <ul class="nav navbar-nav">
-                <li ng-class = "{active: showCtrl.linkIsSelected('title')}">
-                    <a href ng-click="showCtrl.ordenar('title')">Titulo <span class="glyphicon sort-icon mysize" ng-show="showCtrl.getClave()=='title'" ng-class="{'glyphicon-chevron-up':!showCtrl.getInvertir(),'glyphicon-chevron-down':showCtrl.getInvertir()}"></span></a>
-                </li>
-                <li ng-class = "{active: showCtrl.linkIsSelected('fecha')}">
-                    <a href ng-click="showCtrl.ordenar('fecha')">Fecha <span class="glyphicon sort-icon mysize" ng-show="showCtrl.getClave()=='fecha'" ng-class="{'glyphicon-chevron-up':!showCtrl.getInvertir(),'glyphicon-chevron-down':showCtrl.getInvertir()}"></span></a>
-                </li>
-                <li ng-class = "{active: showCtrl.linkIsSelected('valoracion')}">
-                    <a href ng-click="showCtrl.ordenar('valoracion')">Puntaje <span class="glyphicon sort-icon mysize" ng-show="showCtrl.getClave()=='valoracion'" ng-class="{'glyphicon-chevron-up':!showCtrl.getInvertir(),'glyphicon-chevron-down':showCtrl.getInvertir()}"></span></a>
-                </li>
-
-            </ul>
-
-            <!--filtro-->
-                <form class="navbar-form right" role="search">
-
-                    <i class="glyphicon glyphicon-search"></i>
-                    <div class="form-group">
-                        <input type="text" ng-model="filtro" class="form-control" placeholder="filtrar">
-                    </div>
-
-                    <select ng-model='filtroSeleccionado' class='form-control'>
-                        <option value="" selected>Titulo</option>
-                        <option value="directores">Director</option>
-                        <option value="actores">Actor</option>
-                    </select>
-
-                </form>
-            </div>
-        <!-- /.navbar-collapse -->
-    </nav>
-
-    <!-- Peliculas -->
-    <div class="col-md-3 col-sm-6 miniatura"
-         dir-paginate="peli in moviesCtrl.peliculas|orderBy:showCtrl.getClave():showCtrl.getInvertir()|dinamicFilter:filtroSeleccionado:filtro|itemsPerPage:4">
-        <div class="thumbnail">
-            <img src="http://placehold.it/800x500" alt="">
-            <div class="caption">
-                <h2>{{peli.title}}</h2>
-                <h3>{{peli.valoracion}}</h3>
-                <p>{{peli.sinopsis | limitTo : 20}}...</p>
-                <p>
-                    <a class="btn btn-default" ng-click="moviesCtrl.selectFilm(peli._id);showCtrl.scrollTo('pelicula')">More Info</a>
-                </p>
-            </div>
-        </div>
-    </div>
-
-</div>
-    <dir-pagination-controls
-            max-size="5"
-            direction-links="true"
-            boundary-links="true" >
-    </dir-pagination-controls>
-<!-- Seleccionada -->
-<div id="pelicula">
-<div ng-show="moviesCtrl.haySeleccionada()">
-    <div class="row" >
-        <div class="col-lg-12">
-            <h1 class="page-header">{{moviesCtrl.seleccionada.title}}</h1>
-            <h2>Calificacion: {{ (moviesCtrl.seleccionada.valoracion != null) ?  (moviesCtrl.seleccionada.valoracion/moviesCtrl.seleccionada.calificaciones) : 0   }}  <span class="glyphicon glyphicon-star" aria-hidden="true"></span> </h2>
-            <h3 ng-show="true">Calificar:
-                <div>
-                    <uib-rating read-only="isReadonly" ng-model="rate" max="5" on-hover="moviesCtrl.hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three','four','five']" aria-labelledby="default-rating" ng-click="moviesCtrl.setRating(rate)}"></uib-rating>
-                </div>
-            </h3>
-        </div>
-    </div>
-
-    <div class="row">
-
-        <div class="col-md-8">
-            <img class="img-responsive" src="http://placehold.it/750x500" alt="">
-        </div>
-
-        <div class="col-md-4">
-            <h3>Sinopsis</h3>
-            <p>{{moviesCtrl.seleccionada.sinopsis}}</p>
-            <h3>Director/es</h3>
-            <ul ng-repeat="director in moviesCtrl.seleccionada.directores">
-                <li>{{director}}</li>
-            </ul>
-            <h3>Actores</h3>
-            <ul ng-repeat="actor in moviesCtrl.seleccionada.actores">
-                <li>{{actor}}</li>
-            </ul>
-        </div>
-
-    </div>
-    <!-- /seleccionada-->
-
-    <!-- Relacionadas -->
-    <div class="row">
-
-        <div class="col-lg-12">
-            <h3 class="page-header">Related Projects</h3>
-        </div>
-
-        <div class="col-sm-3 col-xs-6">
-            <a href="#">
-                <img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">
-            </a>
-        </div>
-    </div>
-    <!-- /Relacionadas -->
-</div>
-</div>
-<hr>
 <!-- Footer -->
 <footer>
     <div class="row">

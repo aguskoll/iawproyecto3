@@ -18,6 +18,10 @@
 
 
                 });
+            $routeProvider.when('/index.html', {
+                templateUrl: 'vistas/paginas/peliculas/listar.html'
+
+                });
             $routeProvider.otherwise({
                
                         redirectTo:'/index.html'
@@ -78,10 +82,9 @@
 
         this.scrollTo = function(id) {
             $location.hash(id);
-            console.log($location.hash());
             $anchorScroll();
         };
-        
+
         this.ordenar = function (clave){
             this.clave = clave;
             this.invertir = !this.invertir;
