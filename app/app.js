@@ -29,11 +29,10 @@
                 )
         }]);
 
-    app.controller('MoviesController', ['$http', '$log', function($http,$log){
+    app.controller('MoviesController', ['$http', '$log','$uibModal', function($http,$log,$uibModal){
 
         var pelis = this;
         this.peliculas =  [ ];
-        this.seleccionada = null;
 
         this.hoveringOver = function(value) {
             this.overStar = value;
@@ -56,24 +55,43 @@
             // or server returns response with an error status.
         });
 
-        this.selectFilm = function (seleccionada) {
-            $log.log(seleccionada);
-            $http({
-                method: 'GET',
-                url: urlServer + '/api/movie/'+seleccionada
-            }).then(function successCallback(response) {
-                pelis.seleccionada  = response.data;
-                pelis.rate = pelis.seleccionada.valoracion;
-            }, function errorCallback(response) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
+        this.open = function (peli) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'vistas/paginas/peliculas/peli.html',
+                controller: 'ModalInstanceCtrl',
+                controllerAs: 'modalCtrl',
+                resolve: {
+                    peliID: function () {
+                        return peli;
+                    }
+                }
             });
+        }
+    }]);
+
+
+    //Controller para el modal
+    app.controller('ModalInstanceCtrl', ['$uibModalInstance','peliID','$http','$scope',function ($uibModalInstance,peliID,$http,$scope) {
+        $scope.seleccionada=null;
+        
+        $http({
+            method: 'GET',
+            url: urlServer + '/api/movie/'+peliID
+        }).then(function successCallback(response) {
+            $scope.seleccionada  = response.data;
+        }, function errorCallback(response) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+        });
+
+        this.ok = function () {
+            $uibModalInstance.close();
         };
 
-        this.haySeleccionada = function () {
-            return this.seleccionada != null;
+        this.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
         };
-
     }]);
 
     app.controller('ShowController',function($location, $anchorScroll){
@@ -101,6 +119,8 @@
         this.getInvertir = function () {
             return this.invertir;
         };
+
+
     });
 
 

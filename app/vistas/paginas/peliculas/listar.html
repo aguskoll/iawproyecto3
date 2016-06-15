@@ -63,7 +63,7 @@
                 <h3>{{peli.valoracion}}</h3>
                 <p>{{peli.sinopsis | limitTo : 20}}...</p>
                 <p>
-                    <a class="btn btn-default" ng-click="moviesCtrl.selectFilm(peli._id);showCtrl.scrollTo('pelicula')">More Info</a>
+                    <a class="btn btn-default" ng-click="moviesCtrl.open(peli._id)">More Info</a>
                 </p>
             </div>
         </div>
@@ -75,57 +75,5 @@
         direction-links="true"
         boundary-links="true" >
 </dir-pagination-controls>
-<!-- Seleccionada -->
-<div id="pelicula">
-    <div ng-show="moviesCtrl.haySeleccionada()">
-        <div class="row" >
-            <div class="col-lg-12">
-                <h1 class="page-header">{{moviesCtrl.seleccionada.title}}</h1>
-                <h2>Calificacion: {{ (moviesCtrl.seleccionada.valoracion != null) ?  (moviesCtrl.seleccionada.valoracion/moviesCtrl.seleccionada.calificaciones) : 0   }}  <span class="glyphicon glyphicon-star" aria-hidden="true"></span> </h2>
-                <h3 ng-show="true">
-                    <div ng-init="isEnabled = true">
-                        <uib-rating read-only="!isEnabled" ng-model="rate" max="5" on-hover="moviesCtrl.hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three','four','five']" aria-labelledby="default-rating" ng-click="!isEnabled||moviesCtrl.setRating(rate);isEnabled=false"></uib-rating>
-                    </div>
-                </h3>
-            </div>
-        </div>
 
-        <div class="row">
-
-            <div class="col-md-8">
-                <img class="img-responsive" src="http://placehold.it/750x500" alt="">
-            </div>
-
-            <div class="col-md-4">
-                <h3>Sinopsis</h3>
-                <p>{{moviesCtrl.seleccionada.sinopsis}}</p>
-                <h3>Director/es</h3>
-                <ul ng-repeat="director in moviesCtrl.seleccionada.directores">
-                    <li>{{director}}</li>
-                </ul>
-                <h3>Actores</h3>
-                <ul ng-repeat="actor in moviesCtrl.seleccionada.actores">
-                    <li>{{actor}}</li>
-                </ul>
-            </div>
-
-        </div>
-        <!-- /seleccionada-->
-
-        <!-- Relacionadas -->
-        <div class="row">
-
-            <div class="col-lg-12">
-                <h3 class="page-header">Related Projects</h3>
-            </div>
-
-            <div class="col-sm-3 col-xs-6">
-                <a href="#">
-                    <img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">
-                </a>
-            </div>
-        </div>
-        <!-- /Relacionadas -->
-    </div>
-</div>
 <hr>
