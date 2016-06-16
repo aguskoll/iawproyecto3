@@ -13,10 +13,9 @@
                     templateUrl: 'vistas/paginas/peliculas/crear.html',
                      controller: 'CrearPeliculas'
                 });
-            $routeProvider.when('/eliminarPelicula', {
-                    templateUrl: 'vistas/paginas/peliculas/eliminar.html'
-
-
+            $routeProvider.when('/editarPelicula', {
+                    templateUrl: 'vistas/paginas/peliculas/editar.html'
+                
                 });
             $routeProvider.when('/index.html', {
                 templateUrl: 'vistas/paginas/peliculas/listar.html'
@@ -29,7 +28,19 @@
                 )
         }]);
 
-    app.controller('MoviesController', ['$http', '$log','$uibModal', function($http,$log,$uibModal){
+    app.service('datos',function(){
+        var savedData = {};
+        this.set = function (data) {
+            savedData = data;
+        };
+
+        this.getDatos = function() {
+            return savedData;
+        };
+
+    });
+
+    app.controller('MoviesController', ['$http', '$log','$uibModal','datos', function($http,$log,$uibModal,datos){
 
         var pelis = this;
         this.peliculas =  [ ];
@@ -67,14 +78,19 @@
                     }
                 }
             });
-        }
+        };
+
+        this.save = function(id){
+            console.log('guardoo'+id);
+            datos.set(id);
+        };
     }]);
 
 
     //Controller para el modal
     app.controller('ModalInstanceCtrl', ['$uibModalInstance','peliID','$http','$scope',function ($uibModalInstance,peliID,$http,$scope) {
         $scope.seleccionada=null;
-        
+
         $http({
             method: 'GET',
             url: urlServer + '/api/movie/'+peliID
@@ -123,6 +139,41 @@
 
     });
 
+    app.controller('EditController', ['$http', '$scope','datos', function($http,$scope,datos){
+        this.peliId = datos.getDatos();
+        var editar=this;
+        $scope.seleccionada = {};
+
+        $http({
+            method: 'GET',
+            url: urlServer + '/api/movie/'+editar.peliId
+        }).then(function successCallback(response) {
+            $scope.seleccionada  = response.data;
+            console.log($scope.seleccionada);
+        }, function errorCallback(response) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+        });
+
+        //inicializo un objeto en los datos de formulario
+        this.editPelicula = function(){
+            $http.put(urlServer+'/api/movie/'+editar.peliId, $scope.seleccionada).success(function(res){
+                console.log(res);
+            });
+        };
+
+        this.deletePelicula = function(){
+            $http({
+                method: 'DELETE',
+                url: urlServer + '/api/movie/'+editar.peliId
+            }).then(function successCallback(response) {
+                console.log('borre');
+            }, function errorCallback(response) {
+                console.log('error cuando borre');
+            });
+        };
+
+    }]);
 
     app.controller('CrearPeliculas', ['$http','$scope','$log',function ($http,$scope,$log) {
 

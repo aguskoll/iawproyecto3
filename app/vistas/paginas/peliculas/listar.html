@@ -59,7 +59,7 @@
         <div class="thumbnail">
             <img src="http://placehold.it/800x500" alt="">
             <div class="caption">
-                <h2>{{peli.title}}</h2>
+                <h2>{{peli.title}} <a href="#/editarPelicula" ng-click="moviesCtrl.save(peli._id)"> <span ng-show="auth.isAuthed()" class="glyphicon glyphicon-edit mysize"></span></a></h2>
                 <h3>{{peli.valoracion}}</h3>
                 <p>{{peli.sinopsis | limitTo : 20}}...</p>
                 <p>

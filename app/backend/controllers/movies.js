@@ -19,7 +19,7 @@ exports.findAllMovies = function(req, res) {
 //GET - Return a movie with specified ID
 exports.findById = function(req, res) {
     Movie.findById(req.params.id, function(err, movie) {
-        if(err) return res.send(500, err.message);
+        if(err) return res.status(500).send(err.message);
 
         console.log('GET /movie/' + req.params.id);
         res.status(200).jsonp(movie);
@@ -30,8 +30,8 @@ exports.findById = function(req, res) {
 exports.addMovie = function(req, res) {
     console.log('POST');
     console.log(req.body);
-    if(typeof req.body.title == 'undefined' || req.body.title==' ' || req.body.title==null){
-        return res.send(401, 'falta el titulo');
+    if(typeof req.body.title == 'undefined' || req.body.title=='' || req.body.title==null){
+        return res.status(400).send('falta el titulo');
     }
         var mov = new Movie({
         title:    req.body.title,
@@ -54,6 +54,9 @@ exports.addMovie = function(req, res) {
 
 //PUT - Update a register already exists
 exports.updateMovie = function(req, res) {
+    if(typeof req.body.title == 'undefined' || req.body.title=='' || req.body.title==null){
+        return res.status(400).send('falta el titulo');
+    };
     Movie.findById(req.params.id, function(err, movie) {
         movie.title = req.body.title;
         movie.fecha = req.body.fecha;
@@ -91,7 +94,7 @@ exports.calificateMovie = function(req, res) {
 exports.deleteMovie = function(req, res) {
     Movie.findById(req.params.id, function(err, movie) {
         movie.remove(function(err) {
-            if(err) return res.send(500, err.message);
+            if(err) return res.status(500).send(err.message);
             res.status(200).send();
         })
     });

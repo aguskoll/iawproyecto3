@@ -3,7 +3,7 @@
 </div>
 <!-- Seleccionada -->
 <div id="pelicula" class="modal-body">
-            <h2>Calificacion: {{ (seleccionada.valoracion != null) ?  (seleccionada.valoracion/seleccionada.calificaciones) : 0   }}  <span class="glyphicon glyphicon-star" aria-hidden="true"></span> </h2>
+            <h2>Calificacion: {{ (seleccionada.valoracion != null) ?  ((seleccionada.valoracion/seleccionada.calificaciones) | number:2) : 0   }}  <span class="glyphicon glyphicon-star" aria-hidden="true"></span> </h2>
             <h3 ng-show="true">
                 <div ng-init="isEnabled = true">
                     <uib-rating read-only="!isEnabled" ng-model="rate" max="5" on-hover="moviesCtrl.hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three','four','five']" aria-labelledby="default-rating" ng-click="!isEnabled||moviesCtrl.setRating(rate);isEnabled=false"></uib-rating>

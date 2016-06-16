@@ -1,0 +1,83 @@
+<h4>Editar pelicula</h4>
+<div  ng-cloack>
+    <form name="editarPeliculasForm" ng-controller="EditController as editCtrl"
+          ng-submit="editarPeliculasForm.$valid&&editCtrl.editPelicula()" novalidate>
+
+
+        <fieldset class="form-group">
+            Titulo:{{editCtrl.pelicula.title}}
+            <input ng-model="editCtrl.pelicula.title"
+                   class="form-control" placeholder="titulo"
+                   title="title" name="title"
+                   ng-value="seleccionada.title"
+                   required>
+            <span ng-show="!editarPeliculasForm.$pristine &&editarPeliculasForm.title.$error.required">El titulo es requerido</span>
+            </input>
+        </fieldset>
+
+        <fieldset class="form-group">
+            Sinopsis:
+            <input ng-model="editarCtrl.pelicula.sinopsis"
+                   class="form-control"
+                   placeholder="Describi brevemente la pelicula: "
+                   ng-value="seleccionada.sinopsis" name="sinopsis"
+                   title="sinopsis">
+            </input>
+
+            <!--span ng-show="!crearPeliculasForm.$pristine &&crearPeliculasForm.sinopsis.$error.required">La descripcion de la pelicula es requerida</--span-->
+        </fieldset>
+
+
+
+        <fieldset class="form-group">
+            Directores:
+            <input ng-model="editCtrl.pelicula.directores" class="form-control"
+                   name="directores" ng-value="seleccionada.directores" title="Directores"
+                   placeholder="Ingrese el/los directores de la pelicula">
+            </input>
+        </fieldset>
+
+        <fieldset class="form-group">
+            Actores: <input ng-model="editCtrl.pelicula.actores" class="form-control"
+                            name="actores" placeholder="Actores principales" title="Actores"
+                            ng-value="seleccionada.actores">
+            </input>
+        </fieldset>
+
+        <fieldset class="form-group">
+            Duracion:
+            <input ng-model="editCtrl.pelicula.duracion" class="form-control" name="duracion"
+                   placeholder="120 min" title="Duracion"  ng-value="seleccionada.duracion">
+            </input>
+        </fieldset>
+
+        <fieldset class="form-group">
+            Año de estreno: <input ng-model="editCtrl.pelicula.fecha" class="form-control" name="fecha"
+                                   ng-value="seleccionada.fecha"
+                                   placeholder="Año de estreno"   title="fecha" />
+
+        </fieldset>
+
+
+
+        <fieldset class="form-group">
+            Plabras claves:
+        <textarea ng-model="editCtrl.pelicula.referencias" class="form-control"
+                  name="referencias" placeholder="ingrese, palabras, claves"
+                  title="referencias">
+        </textarea>
+
+        </fieldset>
+
+        <fieldset class="form-group">
+            <input type="submit" class="btn btn-primary pull-right" value="Crear pelicula"
+                   ng-click="showAlert($event)" ng-disabled="!editarPeliculasForm.$valid" />
+
+            <button ng-click="editCtrl.deletePelicula()" type="button" class="btn btn-default btn-lg">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Eliminar pelicula
+            </button>
+
+        </fieldset>
+
+    </form>
+</div>
