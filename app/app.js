@@ -45,7 +45,7 @@
 
     });
 
-    app.controller('MoviesController', ['$http', '$log','$uibModal','datos','$scope', function($http,$log,$uibModal,$scope,datos){
+    app.controller('MoviesController', ['$http', '$log','$uibModal','$scope','datos', function($http,$log,$uibModal,$scope,datos){
 
         var pelis = this;
         this.peliculas =  [ ];
@@ -236,7 +236,9 @@
         var myInterceptor = {
             request: function(config) {
                 var token = auth.getToken();
+                $log.log('entro A ' +config.url.indexOf(getUrlServer()+'/api'));
                 if(config.url.indexOf(getUrlServer()+'/api') === 0 && token) {
+                    $log.log('entro ' + token);
                     config.headers.Authorization = token;
 
                 };
@@ -244,7 +246,6 @@
             },
             response: function(response) {
                 if(response.config.url.indexOf(getUrlServer()+'/api/authenticate') === 0 && response.data.token) {
-                    $log.log('entro ' + response.data.token);
                     auth.saveToken(response.data.token)
                 };
                 return response;
@@ -252,29 +253,7 @@
         };
 
         return myInterceptor;
-        /*    return {
-            // automatically attach Authorization header
-            request: function(config) {
-                var token = auth.getToken();
-                if(config.url.indexOf(getUrlServer()+'/api') === 0 && token) {
-                    config.headers.Authorization = 'Bearer ' + token;
-                }
 
-                return config;
-            },
-
-            // If a token was sent back, save it
-            response: function(res) {
-                $log.log('lalsadafksfjdaskfjdsklfjdsklfasjfdaskfj');
-                if(res.config.url.indexOf(getUrlServer()+'/api/authenticate') === 0 && res.data.token) {
-                    $log.log('entro');
-                    auth.saveToken(res.data.token);
-
-                }
-
-                return res;
-            }
-        }*/
     }]);
 
 
@@ -323,21 +302,7 @@
             $window.localStorage.removeItem('jwtToken');
         }
     }]);
-    /*
-    app.controller('GoogleController', ['$scope',function ($scope) {
-        var self = this;
-        var datos=getDatosUsuario();
 
-        $scope.ingresar = function () {
-            console.log("entreee");
-        };
-
-        this.salir = function signOut() {
-            
-        };
-        
-    }]);
-*/
     app.controller('CrearPeliculas', ['$http','$scope','$log',function ($http,$scope,$log) {
 
         var crear=this;
@@ -346,7 +311,7 @@
         crear.pelicula = {};
         crear.addPelicula = function(){
 
-            var arrayRef=crear.pelicula.referencias.toString().split(' ');
+          //  var arrayRef=crear.pelicula.referencias.toString().split(' ');
 
 
 

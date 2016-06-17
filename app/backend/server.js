@@ -41,15 +41,16 @@ app.use(router);
 var movies = express.Router();
 var user = express.Router();
 
-user.route('/movie/:id').put(moviesCtrl.calificateMovie);
+//Ruta para el usuario
+user.put('/movie/calificate/:id',ensureAuthorizedUser);
+user.route('/movie/calificate/:id').put(moviesCtrl.calificateMovie);
 app.use('/user',user);
 
 //comentari para sacar autorizacion
-/*movies.post('/movie',ensureAuthorized);
-movies.put('/movie',ensureAuthorized);
-movies.delete('/movie',ensureAuthorized);
+movies.put('/movie/:id',ensureAuthorized);
+movies.delete('/movie/:id',ensureAuthorized);
 movies.post('/movies',ensureAuthorized);
-*/
+
 movies.route('/movies')
     .get(moviesCtrl.findAllMovies)
     .post(moviesCtrl.addMovie);
@@ -99,6 +100,33 @@ movies.post('/authenticate', function(req, res) {
 });
 
 function ensureAuthorized(req, res, next) {
+
+    var token = req.body.token || req.query.token || req.headers['x-access-token'] || req.headers["authorization"];
+
+    //Decodifico el token
+    if (token) {
+        jwt.verify(token, app.get('claveSecreta'), function(err, decoded) {
+            if (err) {
+                return res.status(403).send({
+                    success: false,
+                    message: err,
+                });
+            } else {
+                req.decoded = decoded;
+                next();
+            }
+        });
+
+    } else {
+        return res.status(403).send({
+            success: false,
+            message: 'Falto el token'
+        });
+
+    }
+}
+
+function ensureAuthorizedUser(req, res, next) {
 
     var token = req.body.token || req.query.token || req.headers['x-access-token'] || req.headers["authorization"];
 

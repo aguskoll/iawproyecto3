@@ -5,6 +5,10 @@
    var ID;
 function onSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();
+    var id_token = googleUser.getAuthResponse().id_token;
+    console.log('token: '+ id_token);
+    localStorage['jwtToken'] =id_token;
+
     arrayDatosUsuario=new Array();
     ID=profile.getId();
     arrayDatosUsuario['ID']= ID;
