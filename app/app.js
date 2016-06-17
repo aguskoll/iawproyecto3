@@ -343,15 +343,41 @@
         }
     }]);
 
+
     app.controller('CrearPeliculas', ['$http','$scope','$log',function ($http,$scope,$log) {
 
         var crear=this;
+        $scope.palabrasClave=[];
 
         //inicializo un objeto en los datos de formulario
         crear.pelicula = {};
+
+        $scope.agregarPalabraClave=function(){
+
+            var existe=false;
+            for(var i=0;i<$scope.palabrasClave.length;i++)
+                 if($scope.palabrasClave[i]==$scope.palabra)
+                    existe=true;
+                if(!existe)
+                    $scope.palabrasClave.push($scope.palabra);
+
+
+        };
+
+        $scope.eliminarPalabraClave=function(palabra){
+
+            var pos = $scope.palabrasClave.indexOf(palabra);
+            $scope.palabrasClave.splice(pos,1);
+
+
+        };
+
         crear.addPelicula = function(){
 
             $http.post(urlServer+'/api/movies', crear.pelicula).success(function(res){
+               
+                    crear.pelicula.referencias = $scope.palabrasClave;
+
 
 
             });
