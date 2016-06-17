@@ -14,7 +14,53 @@ exports.findAllMovies = function(req, res) {
     });
 };
 
+//apartir de un conjunto de palaras clave retorna las relacionadas
+exports.buscarRelacionadas=function(req, res) {
+   var pelicula;
+    Movie.findById(req.params.id, function (err, movie) {
+        if (err) return res.status(500).send(err.message);
+        console.log("pelicula a buscar ref: " + req.params.id);
+        pelicula=movie;
+    });
 
+    Movie.find(function (err, movies) {
+            if (err) return res.send(500, err.message);
+            var salida = new Array();
+
+        if(pelicula!=null) {
+            var palabras = pelicula.referencias.toString().split(' ');
+            var i = 0;
+
+            var puntero = 0;
+            for (i; i < movies.length; i++) {
+
+                var j = 0;
+                var relaciona = false;
+                var palabrasMovie = movies[i].referencias.toString().split(' ');
+                if(pelicula.id!=movies[i].id) {
+                    for (j; j < palabras.length && !relaciona; j++) {
+                        var k = 0;
+
+                        for (k; k < palabrasMovie.length && !relaciona; k++) {
+                            if (palabras[j] == palabrasMovie[k]) {
+                                salida[puntero] = movies[i];
+                                puntero++;
+                                relaciona = true;
+                                console.log("agregue relacionada " + palabras[j]);
+                            }
+                        }
+                    }
+                }
+            }
+            console.log('Relacionadas /movies');
+        }
+
+             res.status(200).jsonp(salida);
+
+
+
+        });
+};
 
 //GET - Return a movie with specified ID
 exports.findById = function(req, res) {

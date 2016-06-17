@@ -60,6 +60,9 @@ movies.route('/movie/:id')
     .put(moviesCtrl.updateMovie)
     .delete(moviesCtrl.deleteMovie);
 
+movies.route('/movies/relacionadas/:id')
+    .get(moviesCtrl.buscarRelacionadas);
+
 app.use('/api', movies);
 
 app.listen(3000, function() {

@@ -45,7 +45,7 @@
 
     });
 
-    app.controller('MoviesController', ['$http', '$log','$uibModal','$scope','datos', function($http,$log,$uibModal,$scope,datos){
+    app.controller('MoviesController', ['$http', '$log','$uibModal','datos','$scope', function($http,$log,$uibModal,$scope,datos){
 
         var pelis = this;
         this.peliculas =  [ ];
@@ -100,6 +100,9 @@
     app.controller('ModalInstanceCtrl', ['$uibModalInstance','peliID','$http','$scope',function ($uibModalInstance,peliID,$http,$scope) {
         $scope.seleccionada=null;
         $scope.puedeVotar=false;
+        $scope.relacionadas=null;
+        var palabrasClave=new Array();
+       
         $http({
             method: 'GET',
             url: urlServer + '/api/movie/'+peliID
@@ -111,6 +114,7 @@
             // or server returns response with an error status.
         });
 
+
         this.ok = function () {
             $uibModalInstance.close();
         };
@@ -118,6 +122,21 @@
         this.cancel = function () {
             $uibModalInstance.dismiss('cancel');
         };
+
+            $http({
+                method: 'GET',
+                url: urlServer + '/api/movies/relacionadas/'+peliID
+            }).then(function successCallback(response) {
+                console.log(response.data);
+                $scope.relacionadas=response.data;
+
+            }, function errorCallback(response) {
+                console.log("error al obetener relacionadas");
+            });
+
+
+
+
     }]);
 
     app.controller('ShowController',function($location, $anchorScroll){
@@ -198,7 +217,7 @@
             var filtro = filtro || '';
             if(filtro == '') {
                 out = input;
-                $log.log(input);
+                //$log.log(input);
             }else {
                 angular.forEach(input, function (peli) {
                     switch (categoria) {
@@ -236,9 +255,7 @@
         var myInterceptor = {
             request: function(config) {
                 var token = auth.getToken();
-                $log.log('entro A ' +config.url.indexOf(getUrlServer()+'/api'));
                 if(config.url.indexOf(getUrlServer()+'/api') === 0 && token) {
-                    $log.log('entro ' + token);
                     config.headers.Authorization = token;
 
                 };
@@ -246,6 +263,7 @@
             },
             response: function(response) {
                 if(response.config.url.indexOf(getUrlServer()+'/api/authenticate') === 0 && response.data.token) {
+                    $log.log('entro ' + response.data.token);
                     auth.saveToken(response.data.token)
                 };
                 return response;
@@ -253,7 +271,29 @@
         };
 
         return myInterceptor;
+        /*    return {
+            // automatically attach Authorization header
+            request: function(config) {
+                var token = auth.getToken();
+                if(config.url.indexOf(getUrlServer()+'/api') === 0 && token) {
+                    config.headers.Authorization = 'Bearer ' + token;
+                }
 
+                return config;
+            },
+
+            // If a token was sent back, save it
+            response: function(res) {
+                $log.log('lalsadafksfjdaskfjdsklfjdsklfasjfdaskfj');
+                if(res.config.url.indexOf(getUrlServer()+'/api/authenticate') === 0 && res.data.token) {
+                    $log.log('entro');
+                    auth.saveToken(res.data.token);
+
+                }
+
+                return res;
+            }
+        }*/
     }]);
 
 
@@ -311,10 +351,6 @@
         crear.pelicula = {};
         crear.addPelicula = function(){
 
-          //  var arrayRef=crear.pelicula.referencias.toString().split(' ');
-
-
-
             $http.post(urlServer+'/api/movies', crear.pelicula).success(function(res){
 
 
@@ -330,7 +366,7 @@
             var url = "http://www.omdbapi.com/?t=" +
                 titulo +
                 "&y=&plot=short&r=json";
-            console.log("url a buscar " + url);
+          //  console.log("url a buscar " + url);
 
             $http({
                 method: 'GET',
