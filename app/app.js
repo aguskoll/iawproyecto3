@@ -45,7 +45,7 @@
 
     });
 
-    app.controller('MoviesController', ['$http', '$log','$uibModal','datos','$scope', function($http,$log,$uibModal,$scope,datos){
+    app.controller('MoviesController', ['$http', '$log','$uibModal','$scope','datos', function($http,$log,$uibModal,$scope,datos){
 
         var pelis = this;
         this.peliculas =  [ ];

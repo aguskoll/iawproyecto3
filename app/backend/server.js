@@ -6,7 +6,7 @@ mongoose = require('mongoose');
 
 var jwt    = require('jsonwebtoken');
 var config = require('./../js/config/config');
-
+var request = require('request');
 mongoose.connect(config.database, function(err, res) {
     if(err) {
         console.log('ERROR: connecting to Database. ' + err);
@@ -135,15 +135,25 @@ function ensureAuthorizedUser(req, res, next) {
 
     //Decodifico el token
     if (token) {
-        jwt.verify(token, app.get('claveSecreta'), function(err, decoded) {
+/*        jwt.verify(token, app.get('claveSecreta'), function(err, decoded) {
             if (err) {
                 return res.status(403).send({
                     success: false,
                     message: err,
                 });
             } else {
-                req.decoded = decoded;
+
+            }
+        });*/
+        request('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token='+token, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                req.decoded = body;
                 next();
+            }else{console.log(error);
+                return res.status(403).send({
+                    success: false,
+                    message: error,
+                });
             }
         });
 
