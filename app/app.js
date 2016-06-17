@@ -1,13 +1,17 @@
 
 'use config/env.js';
-
+'use js/usuarios/google.js';
 (function(){
     var urlServer=getUrlServer();
     //Variables de ambiente
-   var app= angular.module('library', ['ngRoute','angularUtils.directives.dirPagination','ui.bootstrap']);
 
-    app.config(['$routeProvider', '$httpProvider',function($routeProvider, $httpProvider) {
-        $httpProvider.interceptors.push('myInterceptor');
+   var app= angular.module('library',
+       ['ngRoute','angularUtils.directives.dirPagination','ui.bootstrap']);
+
+    app.config(['$routeProvider', '$httpProvider',
+        function($routeProvider, $httpProvider) {
+
+            $httpProvider.interceptors.push('myInterceptor');
 
             $routeProvider.when('/crearPelicula', {
                     templateUrl: 'vistas/paginas/peliculas/crear.html',
@@ -25,7 +29,8 @@
                
                         redirectTo:'/index.html'
                     }
-                )
+                );
+
         }]);
 
     app.service('datos',function(){
@@ -40,10 +45,11 @@
 
     });
 
-    app.controller('MoviesController', ['$http', '$log','$uibModal','datos', function($http,$log,$uibModal,datos){
+    app.controller('MoviesController', ['$http', '$log','$uibModal','datos','$scope', function($http,$log,$uibModal,$scope,datos){
 
         var pelis = this;
         this.peliculas =  [ ];
+
 
         this.hoveringOver = function(value) {
             this.overStar = value;
@@ -67,7 +73,10 @@
         });
 
         this.open = function (peli) {
-            var modalInstance = $uibModal.open({
+
+
+          var modalInstance = $uibModal.open({
+
                 animation: true,
                 templateUrl: 'vistas/paginas/peliculas/peli.html',
                 controller: 'ModalInstanceCtrl',
@@ -90,12 +99,13 @@
     //Controller para el modal
     app.controller('ModalInstanceCtrl', ['$uibModalInstance','peliID','$http','$scope',function ($uibModalInstance,peliID,$http,$scope) {
         $scope.seleccionada=null;
-
+        $scope.puedeVotar=false;
         $http({
             method: 'GET',
             url: urlServer + '/api/movie/'+peliID
         }).then(function successCallback(response) {
             $scope.seleccionada  = response.data;
+            $scope.puedeVotar =  googleIngreso();
         }, function errorCallback(response) {
             // called asynchronously if an error occurs
             // or server returns response with an error status.
@@ -175,53 +185,6 @@
 
     }]);
 
-    app.controller('CrearPeliculas', ['$http','$scope','$log',function ($http,$scope,$log) {
-
-        var crear=this;
-
-        //inicializo un objeto en los datos de formulario
-        crear.pelicula = {};
-        crear.addPelicula = function(){
-            console.log('entre a crear'+crear.pelicula);
-            $http.post(urlServer+'/api/movies', crear.pelicula).success(function(res){
-                console.log(res);
-
-            });
-        };
-
-        $scope.cambio=function(){
-
-            // var titulo = $scope.tituloPelicula;
-            var titulo=crear.pelicula.title;
-            var  peliculaReferencia={};
-
-            var url = "http://www.omdbapi.com/?t=" +
-                titulo +
-                "&y=&plot=short&r=json";
-            console.log("url a buscar " + url);
-
-            $http({
-                method: 'GET',
-                url: url
-            }).then(function successCallback(response) {
-                $log.log(response.data.Title);
-                $scope.peliculaReferencia=response.data;
-                crear.pelicula.sinopsis=response.data.Plot;
-                crear.pelicula.directores=response.data.Director;
-                crear.pelicula.actores=response.data.Actors;
-                crear.pelicula.duracion=response.data.Runtime;
-                crear.pelicula.fecha=response.data.Year;
-            }, function errorCallback(response) {
-                $log.log(response);
-            });
-
-        };
-
-
-        $scope.showAlert = function(ev) {
-            window.alert("pelicula creada");
-        }
-    }]);
 
     app.filter('dinamicFilter', function($log) {
 
@@ -265,7 +228,7 @@
             return out;
         }
     });
- 
+
     //--autenticacion
 
     app.factory('myInterceptor', ['auth','$log', function(auth,$log){
@@ -360,7 +323,72 @@
             $window.localStorage.removeItem('jwtToken');
         }
     }]);
+    /*
+    app.controller('GoogleController', ['$scope',function ($scope) {
+        var self = this;
+        var datos=getDatosUsuario();
 
+        $scope.ingresar = function () {
+            console.log("entreee");
+        };
+
+        this.salir = function signOut() {
+            
+        };
+        
+    }]);
+*/
+    app.controller('CrearPeliculas', ['$http','$scope','$log',function ($http,$scope,$log) {
+
+        var crear=this;
+
+        //inicializo un objeto en los datos de formulario
+        crear.pelicula = {};
+        crear.addPelicula = function(){
+
+            var arrayRef=crear.pelicula.referencias.toString().split(' ');
+
+
+
+            $http.post(urlServer+'/api/movies', crear.pelicula).success(function(res){
+
+
+            });
+        };
+
+        $scope.cambio=function(){
+
+            // var titulo = $scope.tituloPelicula;
+            var titulo=crear.pelicula.title;
+            var  peliculaReferencia={};
+
+            var url = "http://www.omdbapi.com/?t=" +
+                titulo +
+                "&y=&plot=short&r=json";
+            console.log("url a buscar " + url);
+
+            $http({
+                method: 'GET',
+                url: url
+            }).then(function successCallback(response) {
+               // $log.log(response.data.Title);
+                $scope.peliculaReferencia=response.data;
+                crear.pelicula.sinopsis=response.data.Plot;
+                crear.pelicula.directores=response.data.Director;
+                crear.pelicula.actores=response.data.Actors;
+                crear.pelicula.duracion=response.data.Runtime;
+                crear.pelicula.fecha=response.data.Year;
+            }, function errorCallback(response) {
+                $log.log(response);
+            });
+
+        };
+
+
+        $scope.showAlert = function(ev) {
+            window.alert("pelicula creada");
+        }
+    }]);
     app.controller('AuthController', ['user','auth',function(user, auth){
         var self = this;
 
@@ -388,5 +416,6 @@
 
     }]);
 
+   
 })();
 

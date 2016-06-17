@@ -45,11 +45,11 @@ user.route('/movie/:id').put(moviesCtrl.calificateMovie);
 app.use('/user',user);
 
 //comentari para sacar autorizacion
-movies.post('/movie',ensureAuthorized);
+/*movies.post('/movie',ensureAuthorized);
 movies.put('/movie',ensureAuthorized);
 movies.delete('/movie',ensureAuthorized);
 movies.post('/movies',ensureAuthorized);
-
+*/
 movies.route('/movies')
     .get(moviesCtrl.findAllMovies)
     .post(moviesCtrl.addMovie);
