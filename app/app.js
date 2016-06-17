@@ -114,7 +114,7 @@
             // or server returns response with an error status.
         });
 
-
+      
         this.ok = function () {
             $uibModalInstance.close();
         };
@@ -373,14 +373,10 @@
         };
 
         crear.addPelicula = function(){
-
+            crear.pelicula.referencias = $scope.palabrasClave;
             $http.post(urlServer+'/api/movies', crear.pelicula).success(function(res){
-               
-                    crear.pelicula.referencias = $scope.palabrasClave;
 
-
-
-            });
+          });
         };
 
         $scope.cambio=function(){
@@ -405,6 +401,8 @@
                 crear.pelicula.actores=response.data.Actors;
                 crear.pelicula.duracion=response.data.Runtime;
                 crear.pelicula.fecha=response.data.Year;
+             
+                crear.pelicula.urlFoto=response.data.Poster;
             }, function errorCallback(response) {
                 $log.log(response);
             });

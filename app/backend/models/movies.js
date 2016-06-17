@@ -11,7 +11,8 @@ var movieSchema = new Schema({
     calificaciones: Number,
     valoracion: Number,
     refe: [Schema.Types.ObjectId],
-    referencias:  [String]
+    referencias:  [String],
+    urlFoto:String
 });
 
 module.exports = mongoose.model('Movies', movieSchema);

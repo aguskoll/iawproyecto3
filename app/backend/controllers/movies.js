@@ -82,16 +82,18 @@ exports.addMovie = function(req, res) {
         return res.status(400).send('falta el titulo');
     }
         var mov = new Movie({
-        title:    req.body.title,
-        fecha:    req.body.fecha,
-        directores: req.body.directores,
-        actores:  req.body.actores,
-        sinopsis: req.body.sinopsis,
-        duracion:   req.body.duracion,
-        calificaciones: req.body.calificaciones,
-        valoracion: req.body.valoracion,
-        refe: req.body.refe,
-        referencias:  req.body.referencias
+            title:    req.body.title,
+            fecha:    req.body.fecha,
+            directores: req.body.directores,
+            actores:  req.body.actores,
+            sinopsis: req.body.sinopsis,
+            duracion:   req.body.duracion,
+            calificaciones: req.body.calificaciones,
+            valoracion: req.body.valoracion,
+            refe: req.body.refe,
+            referencias:  req.body.referencias,
+            urlFoto:req.body.urlFoto
+            
     });
 
     mov.save(function(err, movie) {
