@@ -352,6 +352,13 @@
         //inicializo un objeto en los datos de formulario
         crear.pelicula = {};
 
+        crear.addPelicula = function(){
+            crear.pelicula.referencias = $scope.palabrasClave;
+            $http.post(urlServer+'/api/movies', crear.pelicula).success(function(res){
+
+            });
+        };
+
         $scope.agregarPalabraClave=function(){
 
             var existe=false;
@@ -364,6 +371,7 @@
 
         };
 
+
         $scope.eliminarPalabraClave=function(palabra){
 
             var pos = $scope.palabrasClave.indexOf(palabra);
@@ -372,12 +380,6 @@
 
         };
 
-        crear.addPelicula = function(){
-            crear.pelicula.referencias = $scope.palabrasClave;
-            $http.post(urlServer+'/api/movies', crear.pelicula).success(function(res){
-
-          });
-        };
 
         $scope.cambio=function(){
 
@@ -401,9 +403,8 @@
                 crear.pelicula.actores=response.data.Actors;
                 crear.pelicula.duracion=response.data.Runtime;
                 crear.pelicula.fecha=response.data.Year;
-             
+
                 crear.pelicula.urlFoto=response.data.Poster;
-            }, function errorCallback(response) {
                 $log.log(response);
             });
 
