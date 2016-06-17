@@ -12,7 +12,7 @@ var port= '3000';
 var IdUsuario;
 
 function getUrlServer(){
-  console.log('entre al get url');
+  
     return url+port;
 }
 

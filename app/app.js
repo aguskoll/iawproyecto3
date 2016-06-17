@@ -100,6 +100,9 @@
     app.controller('ModalInstanceCtrl', ['$uibModalInstance','peliID','$http','$scope',function ($uibModalInstance,peliID,$http,$scope) {
         $scope.seleccionada=null;
         $scope.puedeVotar=false;
+        $scope.relacionadas=null;
+        var palabrasClave=new Array();
+       
         $http({
             method: 'GET',
             url: urlServer + '/api/movie/'+peliID
@@ -111,6 +114,7 @@
             // or server returns response with an error status.
         });
 
+
         this.ok = function () {
             $uibModalInstance.close();
         };
@@ -118,6 +122,21 @@
         this.cancel = function () {
             $uibModalInstance.dismiss('cancel');
         };
+
+            $http({
+                method: 'GET',
+                url: urlServer + '/api/movies/relacionadas/'+peliID
+            }).then(function successCallback(response) {
+                console.log(response.data);
+                $scope.relacionadas=response.data;
+
+            }, function errorCallback(response) {
+                console.log("error al obetener relacionadas");
+            });
+
+
+
+
     }]);
 
     app.controller('ShowController',function($location, $anchorScroll){
@@ -198,7 +217,7 @@
             var filtro = filtro || '';
             if(filtro == '') {
                 out = input;
-                $log.log(input);
+                //$log.log(input);
             }else {
                 angular.forEach(input, function (peli) {
                     switch (categoria) {
@@ -323,21 +342,7 @@
             $window.localStorage.removeItem('jwtToken');
         }
     }]);
-    /*
-    app.controller('GoogleController', ['$scope',function ($scope) {
-        var self = this;
-        var datos=getDatosUsuario();
 
-        $scope.ingresar = function () {
-            console.log("entreee");
-        };
-
-        this.salir = function signOut() {
-            
-        };
-        
-    }]);
-*/
     app.controller('CrearPeliculas', ['$http','$scope','$log',function ($http,$scope,$log) {
 
         var crear=this;
@@ -345,10 +350,6 @@
         //inicializo un objeto en los datos de formulario
         crear.pelicula = {};
         crear.addPelicula = function(){
-
-            var arrayRef=crear.pelicula.referencias.toString().split(' ');
-
-
 
             $http.post(urlServer+'/api/movies', crear.pelicula).success(function(res){
 
@@ -365,7 +366,7 @@
             var url = "http://www.omdbapi.com/?t=" +
                 titulo +
                 "&y=&plot=short&r=json";
-            console.log("url a buscar " + url);
+          //  console.log("url a buscar " + url);
 
             $http({
                 method: 'GET',
