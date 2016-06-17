@@ -114,7 +114,7 @@
             // or server returns response with an error status.
         });
 
-
+      
         this.ok = function () {
             $uibModalInstance.close();
         };
@@ -343,19 +343,43 @@
         }
     }]);
 
+
     app.controller('CrearPeliculas', ['$http','$scope','$log',function ($http,$scope,$log) {
 
         var crear=this;
+        $scope.palabrasClave=[];
 
         //inicializo un objeto en los datos de formulario
         crear.pelicula = {};
+
         crear.addPelicula = function(){
-
+            crear.pelicula.referencias = $scope.palabrasClave;
             $http.post(urlServer+'/api/movies', crear.pelicula).success(function(res){
-
 
             });
         };
+
+        $scope.agregarPalabraClave=function(){
+
+            var existe=false;
+            for(var i=0;i<$scope.palabrasClave.length;i++)
+                 if($scope.palabrasClave[i]==$scope.palabra)
+                    existe=true;
+                if(!existe)
+                    $scope.palabrasClave.push($scope.palabra);
+
+
+        };
+
+
+        $scope.eliminarPalabraClave=function(palabra){
+
+            var pos = $scope.palabrasClave.indexOf(palabra);
+            $scope.palabrasClave.splice(pos,1);
+
+
+        };
+
 
         $scope.cambio=function(){
 
@@ -379,7 +403,8 @@
                 crear.pelicula.actores=response.data.Actors;
                 crear.pelicula.duracion=response.data.Runtime;
                 crear.pelicula.fecha=response.data.Year;
-            }, function errorCallback(response) {
+
+                crear.pelicula.urlFoto=response.data.Poster;
                 $log.log(response);
             });
 

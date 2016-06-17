@@ -63,12 +63,29 @@
 
 
         <fieldset class="form-group">
-            Plabras claves:
-        <textarea ng-model="crearCtrl.pelicula.referencias" class="form-control"
-                  name="referencias" placeholder="magia ciencia ficcion"
-                  title="referencias">
-        </textarea>
-  </fieldset>
+                Plabras claves:
+
+            <input ng-model="palabra" class="form-control"
+                      name="referencias" placeholder="magia ciencia ficcion"
+                      title="referencias">
+            </input>
+                <button ng-click="agregarPalabraClave()" class="btn btn-primary pull-left" >Ingresar palabra </button>
+            <div class="row">
+
+                <div class="col-sm-3 col-xs-6" ng-repeat=" p in palabrasClave">
+                    <div class="col-sm-3">
+
+                        <button  class="btn btn-primary pull-left" ng-click="eliminarPalabraClave(p)">
+
+                             <h5>{{ p }}</h5>
+                             <span class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
+
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </fieldset>
 
         <fieldset class="form-group">
             <input type="submit" class="btn btn-primary pull-right" value="Crear pelicula"

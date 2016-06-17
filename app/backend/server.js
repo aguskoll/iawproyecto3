@@ -47,10 +47,11 @@ user.route('/movie/calificate/:id').put(moviesCtrl.calificateMovie);
 app.use('/user',user);
 
 //comentari para sacar autorizacion
+/*
 movies.put('/movie/:id',ensureAuthorized);
 movies.delete('/movie/:id',ensureAuthorized);
 movies.post('/movies',ensureAuthorized);
-
+*/
 movies.route('/movies')
     .get(moviesCtrl.findAllMovies)
     .post(moviesCtrl.addMovie);

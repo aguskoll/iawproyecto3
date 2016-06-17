@@ -26,13 +26,13 @@ exports.buscarRelacionadas=function(req, res) {
     Movie.find(function (err, movies) {
             if (err) return res.send(500, err.message);
             var salida = new Array();
-
+            var suficiente=false;
         if(pelicula!=null) {
             var palabras = pelicula.referencias.toString().split(' ');
             var i = 0;
 
             var puntero = 0;
-            for (i; i < movies.length; i++) {
+            for (i; i < movies.length&&!suficiente; i++) {
 
                 var j = 0;
                 var relaciona = false;
@@ -42,7 +42,7 @@ exports.buscarRelacionadas=function(req, res) {
                         var k = 0;
 
                         for (k; k < palabrasMovie.length && !relaciona; k++) {
-                            if (palabras[j] == palabrasMovie[k]) {
+                            if (palabras[j] == palabrasMovie[k]&&palabras[j]!=' ') {
                                 salida[puntero] = movies[i];
                                 puntero++;
                                 relaciona = true;
@@ -51,6 +51,8 @@ exports.buscarRelacionadas=function(req, res) {
                         }
                     }
                 }
+                if(salida.length>3)
+                    suficiente=true;
             }
             console.log('Relacionadas /movies');
         }
@@ -80,16 +82,18 @@ exports.addMovie = function(req, res) {
         return res.status(400).send('falta el titulo');
     }
         var mov = new Movie({
-        title:    req.body.title,
-        fecha:    req.body.fecha,
-        directores: req.body.directores,
-        actores:  req.body.actores,
-        sinopsis: req.body.sinopsis,
-        duracion:   req.body.duracion,
-        calificaciones: req.body.calificaciones,
-        valoracion: req.body.valoracion,
-        refe: req.body.refe,
-        referencias:  req.body.referencias
+            title:    req.body.title,
+            fecha:    req.body.fecha,
+            directores: req.body.directores,
+            actores:  req.body.actores,
+            sinopsis: req.body.sinopsis,
+            duracion:   req.body.duracion,
+            calificaciones: req.body.calificaciones,
+            valoracion: req.body.valoracion,
+            refe: req.body.refe,
+            referencias:  req.body.referencias,
+            urlFoto:req.body.urlFoto
+            
     });
 
     mov.save(function(err, movie) {
