@@ -2,11 +2,12 @@ var express = require("express"),
     app = express(),
     bodyParser  = require("body-parser"),
     methodOverride = require("method-override");
-mongoose = require('mongoose');
+    mongoose = require('mongoose');
 
 var jwt    = require('jsonwebtoken');
 var config = require('./../js/config/config');
 var request = require('request');
+
 mongoose.connect(config.database, function(err, res) {
     if(err) {
         console.log('ERROR: connecting to Database. ' + err);
@@ -29,10 +30,10 @@ app.use(function (req,res,next) {
 });
 
 // Import Models and controllers
+var votos   = require('./models/votos');
 var models     = require('./models/movies')(app, mongoose);
 var moviesCtrl = require('./controllers/movies');
 var User   = require('./models/user');
-
 var router = express.Router();
 
 app.use(router);
@@ -87,7 +88,7 @@ movies.post('/authenticate', function(req, res) {
             } else {
                 //Creo el token
                 var token = jwt.sign(user, app.get('claveSecreta'), {
-                    expiresIn: "2h" //Valido por 2 horas
+                    expiresIn: "24h" //Valido por 24 horas
                 });
 
                 //Retorno informcacion y token

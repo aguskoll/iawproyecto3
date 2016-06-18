@@ -3,6 +3,7 @@
  */
 var mongoose = require('mongoose');
 var Movie  = mongoose.model('Movies');
+var Votos = mongoose.model('Votos');
 
 //GET - Return all movies in the DB
 exports.findAllMovies = function(req, res) {
@@ -128,15 +129,43 @@ exports.updateMovie = function(req, res) {
 
 //PUT - Update a register already exists
 exports.calificateMovie = function(req, res) {
-    Movie.findById(req.params.id, function(err, movie) {
-        movie.calificaciones = (movie.calificaciones|| 0) +1;
-        movie.valoracion =req.body.valoracion + (movie.valoracion || 0);
 
-        movie.save(function(err) {
+        var respuesta = JSON.parse(req.decoded);
+        Votos.findOne({//Chequeo que el usuario exista
+            idUsuario: respuesta.sub
+        }, function (err, existingUser) {
             if(err) return res.status(500).send(err.message);
-            res.status(200).jsonp(movie);
+
+            if(existingUser == null){//Si el usuario no existe lo creo
+                existingUser = new Votos;
+                existingUser.idUsuario = respuesta.sub;
+
+                existingUser.save(function(err) {
+                    if(err) return res.status(500).send(err.message)
+                });
+            }
+            //Si existe chequeo si voto la pelicula
+                if(existingUser.idPeliculas.indexOf(req.params.id) > -1){
+                    res.status(200).send('Esta pelicula ya fue votada');
+                }else{
+                    Movie.findById(req.params.id, function(err, movie) {
+                        if (err) return res.status(500).send(err.message);
+                        movie.calificaciones = (movie.calificaciones|| 0) +1;
+                        movie.valoracion =req.body.valoracion + (movie.valoracion || 0);
+
+                        movie.save(function(err) {
+                            if(err) return res.status(500).send(err.message);
+                        });
+                    });
+
+                    existingUser.idPeliculas.push(req.params.id);
+                    existingUser.save(function(err) {
+                        if (err) return res.status(500).send(err.message);
+                        res.status(200).send('Pelicula votada');
+                    });
+                };
+
         });
-    });
 };
 
 

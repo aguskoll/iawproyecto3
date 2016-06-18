@@ -55,12 +55,6 @@
             this.overStar = value;
         };
 
-        this.setRating = function(valor){
-            return $http.put(getUrlServer() + '/user/movie/' + pelis.seleccionada._id, {
-                valoracion: valor
-            });
-            
-        };
 
         $http({
             method: 'GET',
@@ -101,6 +95,7 @@
         $scope.seleccionada=null;
         $scope.puedeVotar=false;
         $scope.relacionadas=null;
+        $scope.mensaje=null;
         var palabrasClave=new Array();
        
         $http({
@@ -114,7 +109,14 @@
             // or server returns response with an error status.
         });
 
-      
+        this.setRating = function(valor){
+            console.log(valor);
+            return $http.put(getUrlServer() + '/user/movie/calificate/' + peliID, {
+                valoracion: valor
+            });
+
+        };
+
         this.ok = function () {
             $uibModalInstance.close();
         };
@@ -256,6 +258,11 @@
             request: function(config) {
                 var token = auth.getToken();
                 if(config.url.indexOf(getUrlServer()+'/api') === 0 && token) {
+                    config.headers.Authorization = token;
+
+                };
+
+                if(config.url.indexOf(getUrlServer()+'/user') === 0 && token) {
                     config.headers.Authorization = token;
 
                 };

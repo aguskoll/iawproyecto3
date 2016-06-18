@@ -12,7 +12,7 @@
 
          <h3 ng-show="puedeVotar">
                <div ng-init="isEnabled = true">
-                    <uib-rating read-only="!isEnabled" ng-model="rate" max="5" on-hover="moviesCtrl.hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three','four','five']" aria-labelledby="default-rating" ng-click="!isEnabled||moviesCtrl.setRating(rate);isEnabled=false"></uib-rating>
+                    <uib-rating read-only="!isEnabled" ng-model="rate" max="5" on-hover="moviesCtrl.hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three','four','five']" aria-labelledby="default-rating" ng-click="!isEnabled||modalCtrl.setRating(rate);isEnabled=false"></uib-rating>
                 </div>
         </h3>
    </div>

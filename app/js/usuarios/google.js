@@ -4,9 +4,9 @@
   var arrayDatosUsuario=new Array();
    var ID;
 function onSignIn(googleUser) {
+    console.log(googleUser);
     var profile = googleUser.getBasicProfile();
     var id_token = googleUser.getAuthResponse().id_token;
-    console.log('token: '+ id_token);
     localStorage['jwtToken'] =id_token;
 
     arrayDatosUsuario=new Array();
@@ -15,14 +15,6 @@ function onSignIn(googleUser) {
     arrayDatosUsuario['Nombre']=profile.getName();
     arrayDatosUsuario['Imagen']=profile.getImageUrl();
     arrayDatosUsuario['Email']=profile.getEmail();
-
-    console.log('ID: ' + ID); // Do not send to your backend! Use an ID token instead.
-    console.log('Name: ' + arrayDatosUsuario['Nombre']);
-    console.log('Image URL: ' + arrayDatosUsuario['Imagen']);
-    console.log('Email: ' + arrayDatosUsuario['Email']);
-    
-
-
 }
 function  getIDUsuario() {
 

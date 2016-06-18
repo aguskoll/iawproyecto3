@@ -5,19 +5,20 @@
 
 
         <fieldset class="form-group">
-            Titulo:{{editCtrl.pelicula.title}}
-            <input ng-model="editCtrl.pelicula.title"
+            Titulo:
+            <input ng-model="seleccionada.title"
+                   required
                    class="form-control" placeholder="titulo"
                    title="title" name="title"
                    ng-value="seleccionada.title"
-                   required>
+                   >
             <span ng-show="!editarPeliculasForm.$pristine &&editarPeliculasForm.title.$error.required">El titulo es requerido</span>
             </input>
         </fieldset>
 
         <fieldset class="form-group">
             Sinopsis:
-            <input ng-model="editarCtrl.pelicula.sinopsis"
+            <input ng-model="seleccionada.sinopsis"
                    class="form-control"
                    placeholder="Describi brevemente la pelicula: "
                    ng-value="seleccionada.sinopsis" name="sinopsis"
@@ -31,14 +32,14 @@
 
         <fieldset class="form-group">
             Directores:
-            <input ng-model="editCtrl.pelicula.directores" class="form-control"
+            <input ng-model="seleccionada.directores" class="form-control"
                    name="directores" ng-value="seleccionada.directores" title="Directores"
                    placeholder="Ingrese el/los directores de la pelicula">
             </input>
         </fieldset>
 
         <fieldset class="form-group">
-            Actores: <input ng-model="editCtrl.pelicula.actores" class="form-control"
+            Actores: <input ng-model="seleccionada.actores" class="form-control"
                             name="actores" placeholder="Actores principales" title="Actores"
                             ng-value="seleccionada.actores">
             </input>
@@ -46,13 +47,13 @@
 
         <fieldset class="form-group">
             Duracion:
-            <input ng-model="editCtrl.pelicula.duracion" class="form-control" name="duracion"
+            <input ng-model="seleccionada.duracion" class="form-control" name="duracion"
                    placeholder="120 min" title="Duracion"  ng-value="seleccionada.duracion">
             </input>
         </fieldset>
 
         <fieldset class="form-group">
-            Año de estreno: <input ng-model="editCtrl.pelicula.fecha" class="form-control" name="fecha"
+            Año de estreno: <input ng-model="seleccionada.fecha" class="form-control" name="fecha"
                                    ng-value="seleccionada.fecha"
                                    placeholder="Año de estreno"   title="fecha" />
 
@@ -62,7 +63,7 @@
 
         <fieldset class="form-group">
             Plabras claves:
-        <textarea ng-model="editCtrl.pelicula.referencias" class="form-control"
+        <textarea ng-model="seleccionada.referencias" class="form-control"
                   name="referencias" placeholder="ingrese, palabras, claves"
                   title="referencias">
         </textarea>
