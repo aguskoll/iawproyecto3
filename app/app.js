@@ -25,6 +25,10 @@
                 templateUrl: 'vistas/paginas/peliculas/listar.html'
 
                 });
+            $routeProvider.when('/adminLogin', {
+                templateUrl: 'vistas/paginas/usuario/adminLogin.html'
+
+            });
             $routeProvider.otherwise({
                
                         redirectTo:'/index.html'
@@ -67,13 +71,25 @@
         }
     ]);
 
+    app.controller('LoginGoogleController',['$scope',function($scope){
+
+       
+    }
+    ]);
     //controlador que maneja las peliculas
     app.controller('MoviesController', ['$http', '$log','$uibModal','$scope','datos', function($http,$log,$uibModal,$scope,datos){
 
         var pelis = this;
         this.peliculas =  [ ];
+        this.mostrarBotonIngreso=function() {
 
-
+            if (googleIngreso())
+            {  console.log("ingreso retorno falseweeeeeeeeeee");
+                return false;}
+            else{
+                console.log("no ingreso");
+                return true;}
+        };
         this.hoveringOver = function(value) {
             this.overStar = value;
         };
@@ -374,33 +390,29 @@
 
     app.controller('CrearPeliculas', ['$http','$scope','$log',function ($http,$scope,$log) {
 
-        var crear=this;
-        $scope.palabrasClave=[];
 
+        var self = this;
         //inicializo un objeto en los datos de formulario
-        crear.pelicula = {};
-
-        crear.addPelicula = function(){
-            crear.pelicula.referencias = $scope.palabrasClave;
-            $http.post(urlServer+'/api/movies', crear.pelicula).success(function(res){
-
-            });
-        };
-
-        $scope.agregarPalabraClave=function(){
-
-            var existe=false;
-            for(var i=0;i<$scope.palabrasClave.length;i++)
-                 if($scope.palabrasClave[i]==$scope.palabra)
-                    existe=true;
-                if(!existe)
-                    $scope.palabrasClave.push($scope.palabra);
+        self.pelicula = {};
 
 
+        $scope.palabrasClave = [];
+
+        self.agregarPalabraClave = function (p) {
+
+            var existe = false;
+            for (var i = 0; i < $scope.palabrasClave.length; i++)
+                if ($scope.palabrasClave[i] == $scope.palabra)
+                    existe = true;
+
+            if (!existe)
+                $scope.palabrasClave.push($scope.palabra);
+
+            self.pelicula.referencias = $scope.palabrasClave;
         };
 
 
-        $scope.eliminarPalabraClave=function(palabra){
+        self.eliminarPalabraClave=function(palabra){
 
             var pos = $scope.palabrasClave.indexOf(palabra);
             $scope.palabrasClave.splice(pos,1);
@@ -409,10 +421,10 @@
         };
 
 
-        $scope.cambio=function(){
+        self.cambio=function(){
 
             // var titulo = $scope.tituloPelicula;
-            var titulo=crear.pelicula.title;
+            var titulo=self.pelicula.title;
             var  peliculaReferencia={};
 
             var url = "http://www.omdbapi.com/?t=" +
@@ -426,13 +438,13 @@
             }).then(function successCallback(response) {
                // $log.log(response.data.Title);
                 $scope.peliculaReferencia=response.data;
-                crear.pelicula.sinopsis=response.data.Plot;
-                crear.pelicula.directores=response.data.Director;
-                crear.pelicula.actores=response.data.Actors;
-                crear.pelicula.duracion=response.data.Runtime;
-                crear.pelicula.fecha=response.data.Year;
+                self.pelicula.sinopsis=response.data.Plot;
+                self.pelicula.directores=response.data.Director;
+                self.pelicula.actores=response.data.Actors;
+                self.pelicula.duracion=response.data.Runtime;
+                self.pelicula.fecha=response.data.Year;
 
-                crear.pelicula.urlFoto=response.data.Poster;
+                self.pelicula.urlFoto=response.data.Poster;
                 $log.log(response);
             });
 
@@ -441,7 +453,17 @@
 
         $scope.showAlert = function(ev) {
             window.alert("pelicula creada");
-        }
+        };
+
+        self.addPelicula = function(flag){
+
+                self.pelicula.title = $scope.peliculaReferencia.Title;
+            if(flag) {
+                $http.post(urlServer + '/api/movies', self.pelicula).success(function (res) {
+
+                });
+            }
+        };
     }]);
 
    

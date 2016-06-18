@@ -2,18 +2,19 @@
 <h4>Agregar una pelicula</h4>
 <div  ng-cloack>
     <form name="crearPeliculasForm" ng-controller="CrearPeliculas as crearCtrl"
-          ng-submit="crearPeliculasForm.$valid&&crearCtrl.addPelicula()" novalidate>
+          ng-submit="crearPeliculasForm.$valid&&crearCtrl.addPelicula(true)" novalidate>
 
 
         <fieldset class="form-group">
             Titulo:
         <input ng-model="crearCtrl.pelicula.title"
-                  ng-change="cambio()"
+                  ng-change="crearCtrl.cambio()"
                   class="form-control" placeholder="titulo"
                   title="title" name="title"
-                  ng-value="peliculaReferencia.Title"
+
                   required>
     <span ng-show="!crearPeliculasForm.$pristine &&crearPeliculasForm.title.$error.required">El titulo es requerido</span>
+     Se guardara como: {{peliculaReferencia.Title}}
         </input>
    </fieldset>
 
@@ -60,22 +61,28 @@
 
         </fieldset>
 
-
+        <fieldset class="form-group">
+           URL del poster: <input ng-model="crearCtrl.pelicula.urlFoto" class="form-control" name="urlFoto"
+                                   ng-value="peliculaReferencia.Poster"
+                                   placeholder="1990"   title="fecha" />
+            <img ng-src="{{crearCtrl.pelicula.urlFoto}}" with="200" height="200" class="img-responsive"/>
+        </fieldset>
 
         <fieldset class="form-group">
                 Plabras claves:
 
             <input ng-model="palabra" class="form-control"
-                      name="referencias" placeholder="magia ciencia ficcion"
-                      title="referencias">
-            </input>
-                <button ng-click="agregarPalabraClave()" class="btn btn-primary pull-left" >Ingresar palabra </button>
+                      name="palabras" placeholder="magia ciencia ficcion"
+                      title="palabras"/>
+
+                <href ng-click="crearCtrl.agregarPalabraClave()" class="btn btn-primary pull-left" >Ingresar palabra </href>
+        </fieldset>
             <div class="row">
 
                 <div class="col-sm-3 col-xs-6" ng-repeat=" p in palabrasClave">
                     <div class="col-sm-3">
 
-                        <button  class="btn btn-primary pull-left" ng-click="eliminarPalabraClave(p)">
+                        <button  class="btn btn-primary pull-left" ng-click="crearCtrl.eliminarPalabraClave(p)">
 
                              <h5>{{ p }}</h5>
                              <span class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
@@ -85,7 +92,7 @@
                 </div>
             </div>
 
-        </fieldset>
+
 
         <fieldset class="form-group">
             <input type="submit" class="btn btn-primary pull-right" value="Crear pelicula"
