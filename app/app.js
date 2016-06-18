@@ -33,6 +33,7 @@
 
         }]);
 
+    //Servicio para compartir datos entre controladores
     app.service('datos',function(){
         var savedData = {};
         this.set = function (data) {
@@ -45,6 +46,28 @@
 
     });
 
+    //Directiva para crear mensaje de alerta
+    app.directive( "mwConfirmClick", [
+        function( ) {
+            return {
+                priority: -1,
+                restrict: 'A',
+                scope: { confirmFunction: "&mwConfirmClick" },
+                link: function( scope, element, attrs ){
+                    element.bind( 'click', function( e ){
+                        // message defaults to "Are you sure?"
+                        var message = attrs.mwConfirmClickMessage ? attrs.mwConfirmClickMessage : "Are you sure?";
+                        // confirm() requires jQuery
+                        if( confirm( message ) ) {
+                            scope.confirmFunction();
+                        }
+                    });
+                }
+            }
+        }
+    ]);
+
+    //controlador que maneja las peliculas
     app.controller('MoviesController', ['$http', '$log','$uibModal','$scope','datos', function($http,$log,$uibModal,$scope,datos){
 
         var pelis = this;
@@ -55,36 +78,35 @@
             this.overStar = value;
         };
 
-
-        $http({
-            method: 'GET',
-            url: urlServer + '/api/movies'
-        }).then(function successCallback(response) {
-            pelis.peliculas = response.data;
-        }, function errorCallback(response) {
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
+        $scope.$on('$viewContentLoaded', function() {
+            $http({
+                method: 'GET',
+                url: urlServer + '/api/movies'
+            }).then(function successCallback(response) {
+                pelis.peliculas = response.data;
+            }, function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+            });
         });
 
+
         this.open = function (peli) {
-
-
           var modalInstance = $uibModal.open({
-
-                animation: true,
-                templateUrl: 'vistas/paginas/peliculas/peli.html',
-                controller: 'ModalInstanceCtrl',
-                controllerAs: 'modalCtrl',
-                resolve: {
-                    peliID: function () {
-                        return peli;
-                    }
-                }
-            });
+              animation: true,
+              size: 'lg',
+              templateUrl: 'vistas/paginas/peliculas/peli.html',
+              controller: 'ModalInstanceCtrl',
+              controllerAs: 'modalCtrl',
+              resolve: {
+                  peliID: function () {
+                      return peli;
+                  }
+              }
+          });
         };
 
         this.save = function(id){
-            console.log('guardoo'+id);
             datos.set(id);
         };
     }]);
@@ -97,7 +119,7 @@
         $scope.relacionadas=null;
         $scope.mensaje=null;
         var palabrasClave=new Array();
-       
+
         $http({
             method: 'GET',
             url: urlServer + '/api/movie/'+peliID
@@ -121,15 +143,10 @@
             $uibModalInstance.close();
         };
 
-        this.cancel = function () {
-            $uibModalInstance.dismiss('cancel');
-        };
-
             $http({
                 method: 'GET',
                 url: urlServer + '/api/movies/relacionadas/'+peliID
             }).then(function successCallback(response) {
-                console.log(response.data);
                 $scope.relacionadas=response.data;
 
             }, function errorCallback(response) {
@@ -141,6 +158,7 @@
 
     }]);
 
+    //Controlador para manejar los filtros y visualizacion de peliculas
     app.controller('ShowController',function($location, $anchorScroll){
         this.clave ='';
         this.invertir = false;
@@ -170,7 +188,8 @@
 
     });
 
-    app.controller('EditController', ['$http', '$scope','datos', function($http,$scope,datos){
+    //Controlador para editar una pelicula
+    app.controller('EditController', ['$http', '$scope','datos','$location','$uibModal', function($http,$scope,datos,$location,$uibModal){
         this.peliId = datos.getDatos();
         var editar=this;
         $scope.seleccionada = {};
@@ -180,7 +199,6 @@
             url: urlServer + '/api/movie/'+editar.peliId
         }).then(function successCallback(response) {
             $scope.seleccionada  = response.data;
-            console.log($scope.seleccionada);
         }, function errorCallback(response) {
             // called asynchronously if an error occurs
             // or server returns response with an error status.
@@ -189,7 +207,18 @@
         //inicializo un objeto en los datos de formulario
         this.editPelicula = function(){
             $http.put(urlServer+'/api/movie/'+editar.peliId, $scope.seleccionada).success(function(res){
-                console.log(res);
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    size: 'lg',
+                    templateUrl: 'vistas/paginas/peliculas/peli.html',
+                    controller: 'ModalInstanceCtrl',
+                    controllerAs: 'modalCtrl',
+                    resolve: {
+                        peliID: function () {
+                            return $scope.seleccionada._id;
+                        }
+                    }
+                });
             });
         };
 
@@ -198,19 +227,17 @@
                 method: 'DELETE',
                 url: urlServer + '/api/movie/'+editar.peliId
             }).then(function successCallback(response) {
+                $location.path('/index');
                 console.log('borre');
             }, function errorCallback(response) {
-                console.log('error cuando borre');
             });
         };
 
     }]);
 
 
-    app.filter('dinamicFilter', function($log) {
+    app.filter('dinamicFilter', function() {
 
-        // In the return function, we must pass in a single parameter which will be the data we will work on.
-        // We have the ability to support multiple other parameters that can be passed into the filter optionally
         return function(input,categoria,filtro) {
 
             var out = [];
@@ -250,8 +277,7 @@
         }
     });
 
-    //--autenticacion
-
+    //interceptor para enviar o recibir tokens
     app.factory('myInterceptor', ['auth','$log', function(auth,$log){
 
         var myInterceptor = {
@@ -278,37 +304,10 @@
         };
 
         return myInterceptor;
-        /*    return {
-            // automatically attach Authorization header
-            request: function(config) {
-                var token = auth.getToken();
-                if(config.url.indexOf(getUrlServer()+'/api') === 0 && token) {
-                    config.headers.Authorization = 'Bearer ' + token;
-                }
-
-                return config;
-            },
-
-            // If a token was sent back, save it
-            response: function(res) {
-                $log.log('lalsadafksfjdaskfjdsklfjdsklfasjfdaskfj');
-                if(res.config.url.indexOf(getUrlServer()+'/api/authenticate') === 0 && res.data.token) {
-                    $log.log('entro');
-                    auth.saveToken(res.data.token);
-
-                }
-
-                return res;
-            }
-        }*/
     }]);
 
 
     app.service('user',['$http','auth',function($http,auth){
-        this.getQuote = function() {
-            return $http.get(getUrlServer() + '/api/me')
-        };
-
 
         this.login = function(username, password) {
            return $http.post(getUrlServer() + '/api/authenticate', {
@@ -350,6 +349,28 @@
         }
     }]);
 
+
+    app.controller('AuthController', ['user','auth',function(user, auth){
+        function handleRequest(res) {
+            var token = res.data ? res.data.token : null;
+            if(token) { console.log('JWT:', token); }
+            self.message = res.data.message;
+        }
+
+        this.login = function(use,pass) {
+            user.login(use, pass)
+                .then(handleRequest, handleRequest)
+        };
+
+        this.logout = function() {
+            auth.logout && auth.logout()
+        };
+
+        this.isAuthed = function() {
+            return auth.isAuthed ? auth.isAuthed() : false
+        }
+
+    }]);
 
     app.controller('CrearPeliculas', ['$http','$scope','$log',function ($http,$scope,$log) {
 
@@ -421,32 +442,6 @@
         $scope.showAlert = function(ev) {
             window.alert("pelicula creada");
         }
-    }]);
-    app.controller('AuthController', ['user','auth',function(user, auth){
-        var self = this;
-
-        function handleRequest(res) {
-            var token = res.data ? res.data.token : null;
-            if(token) { console.log('JWT:', token); }
-            self.message = res.data.message;
-        }
-
-        self.login = function(use,pass) {
-            user.login(use, pass)
-                .then(handleRequest, handleRequest)
-        };
-
-        self.getQuote = function() {
-            user.getQuote()
-                .then(handleRequest, handleRequest)
-        };
-        self.logout = function() {
-            auth.logout && auth.logout()
-        };
-        self.isAuthed = function() {
-            return auth.isAuthed ? auth.isAuthed() : false
-        }
-
     }]);
 
    

@@ -4,7 +4,6 @@
   var arrayDatosUsuario=new Array();
    var ID;
 function onSignIn(googleUser) {
-    console.log(googleUser);
     var profile = googleUser.getBasicProfile();
     var id_token = googleUser.getAuthResponse().id_token;
     localStorage['jwtToken'] =id_token;
