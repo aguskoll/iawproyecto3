@@ -128,7 +128,7 @@
         $scope.puedeVotar=false;
         $scope.relacionadas=null;
         $scope.mensaje=null;
-        var con = this;
+        var con = this; 
         this.peliId = peliID;
         var palabrasClave=new Array();
 
@@ -162,9 +162,14 @@
         };
 
         this.setRating = function(valor){
-            console.log(valor);
-            return $http.put(getUrlServer() + '/user/movie/calificate/' + con.peliId, {
+
+            var aux = this;
+            $http.put(getUrlServer() + '/user/movie/calificate/' + con.peliId, {
                 valoracion: valor
+            }).then(function successCallback(response) {
+                $scope.mensaje=response.data;
+            }, function errorCallback(response) {
+                $scope.mensaje=response.data;
             });
 
         };
@@ -301,13 +306,12 @@
             request: function(config) {
                 var token = auth.getToken();
                 var tokenU = auth.getUserToken();
+                console.log('interceptor: ',tokenU);
                 if(config.url.indexOf(getUrlServer()+'/api') === 0 && token) {
                     config.headers.Authorization = token;
-
                 };
 
-                if(config.url.indexOf(getUrlServer()+'/user') === 0 && token) {
-
+                if(config.url.indexOf(getUrlServer()+'/user') === 0 && tokenU) {
                     config.headers.Authorization = tokenU;
                 };
                 return config;
