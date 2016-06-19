@@ -382,6 +382,7 @@
         this.logout = function() {
             $window.localStorage.removeItem('jwtToken');
             signOut();
+            $window.localStorage.removeItem('googleToken');
         }
     }]);
 
