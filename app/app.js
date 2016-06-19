@@ -536,6 +536,22 @@
         };
     }]);
 
-   
+   // UI
+    app.controller('CarouselCtrl', function ($scope) {
+        $scope.myInterval = 3000;
+        $scope.noWrapSlides = false;
+        $scope.activeSlide = 0;
+        $scope.slides = [
+            {
+                image: 'theme/imagenes/Deadpool.jpg'
+            },
+            {
+                image: 'theme/imagenes/Minions.jpg'
+            },
+            {
+                image: 'theme/imagenes/pulp.jpg'
+            },
+        ];
+    });
 })();
 
