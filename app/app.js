@@ -26,7 +26,7 @@
 
                 });
             $routeProvider.when('/adminLogin', {
-                templateUrl: 'vistas/paginas/usuario/adminLogin.html'
+                templateUrl: 'vistas/paginas/usuario/login.html'
 
             });
             $routeProvider.otherwise({
@@ -71,11 +71,6 @@
         }
     ]);
 
-    app.controller('LoginGoogleController',['$scope',function($scope){
-
-       
-    }
-    ]);
     //controlador que maneja las peliculas
     app.controller('MoviesController', ['$http', '$log','$uibModal','$scope','datos', function($http,$log,$uibModal,$scope,datos){
 
@@ -94,7 +89,7 @@
             this.overStar = value;
         };
 
-        $scope.$on('$viewContentLoaded', function() {
+        $scope.$on('$routeChangeSuccess', function() {
             $http({
                 method: 'GET',
                 url: urlServer + '/api/movies'
@@ -354,8 +349,26 @@
             var token = self.getToken();
             if(token) {
                 var params = self.parseJwt(token);
-                return Math.round(new Date().getTime() / 1000) <= params.exp;
-            } else {
+                if(params.hasOwnProperty('iss')){
+                    return true;
+                }else {
+                    return Math.round(new Date().getTime() / 1000) <= params.exp;
+                }
+            }else {
+                return false;
+            }
+        };
+
+        this.isAdmin = function() {
+            var token = self.getToken();
+            if(token) {
+                var params = self.parseJwt(token);
+                if(params.hasOwnProperty('iss')){
+                    return false;
+                }else {
+                    return Math.round(new Date().getTime() / 1000) <= params.exp;
+                }
+            }else {
                 return false;
             }
         };
@@ -365,8 +378,15 @@
         }
     }]);
 
+    app.controller('LoginModalInstanceCtrl', ['$uibModalInstance','$http','$scope',function ($uibModalInstance) {
 
-    app.controller('AuthController', ['user','auth',function(user, auth){
+        this.ok = function () {
+            $uibModalInstance.close();
+        };
+
+    }]);
+
+    app.controller('AuthController', ['user','auth','$uibModal',function(user, auth, $uibModal){
         function handleRequest(res) {
             var token = res.data ? res.data.token : null;
             if(token) { console.log('JWT:', token); }
@@ -384,7 +404,21 @@
 
         this.isAuthed = function() {
             return auth.isAuthed ? auth.isAuthed() : false
-        }
+        };
+
+        this.isAdmin = function(){
+            return auth.isAdmin ? auth.isAdmin() : false
+        };
+
+        this.openModal = function () {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                size: 'sm',
+                templateUrl: 'vistas/paginas/usuario/login.html',
+                controller: 'LoginModalInstanceCtrl',
+                controllerAs: 'loginCtrl'
+            });
+        };
 
     }]);
 

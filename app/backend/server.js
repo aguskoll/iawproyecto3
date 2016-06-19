@@ -137,16 +137,6 @@ function ensureAuthorizedUser(req, res, next) {
 
     //Decodifico el token
     if (token) {
-/*        jwt.verify(token, app.get('claveSecreta'), function(err, decoded) {
-            if (err) {
-                return res.status(403).send({
-                    success: false,
-                    message: err,
-                });
-            } else {
-
-            }
-        });*/
         request('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token='+token, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 req.decoded = body;
@@ -192,9 +182,3 @@ app.get('/setup', function(req, res) {
         res.json({ success: true });
     });
 });
-
-/*
- movies.get('/me', ensureAuthorized, function(req, res) {
- console.log(req.decoded);
- res.json(req.decoded);
- });*/

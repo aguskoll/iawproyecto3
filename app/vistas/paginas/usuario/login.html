@@ -1,0 +1,19 @@
+<div class="modal-header">
+    <h3 class="modal-title">Iniciar sesion</h3>
+</div>
+
+<div id="auth" class="modal-body" ng-controller="AuthController as auth">
+    <form  role="login">
+        <div class="form-group" ng-hide="auth.isAuthed()">
+            <input type="text" ng-model="username" class="form-control" placeholder="Usuario">
+            <input type="password" ng-model="password" class="form-control" placeholder="Contraseña">
+        </div>
+        <button type="submit" ng-click="auth.login(username,password)" ng-hide="auth.isAuthed()" class="btn btn-default">Login</button>
+        <h3 ng-show="auth.isAuthed()">Logueado con exito</h3>
+    </form>
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="loginCtrl.ok()">Cerrar</button>
+</div>
