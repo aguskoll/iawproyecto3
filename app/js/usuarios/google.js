@@ -3,10 +3,11 @@
  */
   var arrayDatosUsuario=new Array();
    var ID;
+
 function onSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();
     var id_token = googleUser.getAuthResponse().id_token;
-    localStorage['jwtToken'] =id_token;
+    localStorage['googleToken'] =id_token;
 
     arrayDatosUsuario=new Array();
     ID=profile.getId();
