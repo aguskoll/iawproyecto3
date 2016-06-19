@@ -1,10 +1,20 @@
 
-<div class="row">
-    <div class="col-lg-12">
-        <h3>Peliculas</h3>
+
+
+<div class="container" ng-controller="CarouselCtrl" id="slides_control">
+    <div>
+        <uib-carousel interval="myInterval" active="activeSlide">
+            <uib-slide ng-repeat="slide in slides" index="$index">
+                <img ng-src="{{slide.image}}" style="margin:auto;">
+                <div class="carousel-caption">
+                </div>
+            </uib-slide>
+        </uib-carousel>
     </div>
 </div>
 
+<hr>
+<div class="container">
 <div class="row text-center" ng-controller="ShowController as showCtrl">
 
     <nav class="navbar navbar-default" role="navigation">
@@ -75,5 +85,5 @@
         direction-links="true"
         boundary-links="true" >
 </dir-pagination-controls>
-
+</div>
 <hr>
