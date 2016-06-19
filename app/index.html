@@ -45,7 +45,7 @@
                                 <span class="texto-google">Cerrar sesion</span>
                             </a>
                         </li>
-                        <li ng-hide="auth.isAdmin()">
+                        <li ng-hide="auth.isAuthed()">
                             <div class="g-signin2" data-onsuccess="onSignIn"></div>
                         </li>
                     </ul>
