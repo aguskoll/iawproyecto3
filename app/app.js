@@ -488,7 +488,7 @@
                 self.pelicula.directores=response.data.Director;
                 self.pelicula.actores=response.data.Actors;
                 self.pelicula.duracion=response.data.Runtime;
-                self.pelicula.fecha==response.data.Year;
+                self.pelicula.fecha=response.data.Year;
                 self.pelicula.urlFoto=response.data.Poster;
                 $log.log(response);
             });
