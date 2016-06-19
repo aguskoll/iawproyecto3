@@ -20,7 +20,7 @@ exports.buscarRelacionadas=function(req, res) {
    var pelicula;
     Movie.findById(req.params.id, function (err, movie) {
         if (err) return res.status(500).send(err.message);
-        console.log("pelicula a buscar ref: " + req.params.id);
+
         pelicula=movie;
     });
 
@@ -30,7 +30,7 @@ exports.buscarRelacionadas=function(req, res) {
             var suficiente=false;
         if(pelicula!=null) {
             var palabras = pelicula.referencias;
-            console.log("palabras de la peli a busc "+palabras);
+
             var i = 0;
 
             var puntero = 0;
@@ -40,7 +40,7 @@ exports.buscarRelacionadas=function(req, res) {
                 var relaciona = false;
               //  var palabrasMovie = movies[i].referencias.toString().split(' ');
                 var palabrasMovie = movies[i].referencias;
-                console.log("palabras de la otra peli "+palabrasMovie);
+
                 if(pelicula.id!=movies[i].id) {
                     for (j; j < palabras.length && !relaciona; j++) {
                         var k = 0;
@@ -108,6 +108,7 @@ exports.addMovie = function(req, res) {
 
 //PUT - Update a register already exists
 exports.updateMovie = function(req, res) {
+    console.log('put '+req.body);
     if(typeof req.body.title == 'undefined' || req.body.title=='' || req.body.title==null){
         return res.status(400).send('falta el titulo');
     };
@@ -122,6 +123,7 @@ exports.updateMovie = function(req, res) {
         movie.valoracion =req.body.valoracion;
         movie.refe = req.body.refe;
         movie.referencias =  req.body.referencias;
+        movie.urlFoto=req.body.urlFoto;
 
         movie.save(function(err) {
             if(err) return res.status(500).send(err.message);

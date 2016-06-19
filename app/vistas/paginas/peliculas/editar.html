@@ -1,82 +1,123 @@
-<h4>Editar pelicula</h4>
+<h2 xmlns="http://www.w3.org/1999/html">Editar pelicula</h2>
 <div  ng-cloack>
     <form name="editarPeliculasForm" ng-controller="EditController as editCtrl"
           ng-submit="editarPeliculasForm.$valid&&editCtrl.editPelicula()" novalidate>
 
 
         <fieldset class="form-group">
-            Titulo:
+            <label class="col-lg-2 control-label">Titulo:</label>
+            <div class="col-lg-10">
             <input ng-model="seleccionada.title"
                    required
                    class="form-control" placeholder="titulo"
                    title="title" name="title"
                    ng-value="seleccionada.title"
                    >
-            <span ng-show="!editarPeliculasForm.$pristine &&editarPeliculasForm.title.$error.required">El titulo es requerido</span>
-            </input>
+                <h5 ng-show="mostrar">Se guardara como: {{peliculaReferencia.Title}}</h5>
+                </input>
+            </div>
         </fieldset>
 
         <fieldset class="form-group">
-            Sinopsis:
+            <label class="col-lg-2 control-label">Sinopsis:</label>
+            <div class="col-lg-10">
             <input ng-model="seleccionada.sinopsis"
                    class="form-control"
                    placeholder="Describi brevemente la pelicula: "
                    ng-value="seleccionada.sinopsis" name="sinopsis"
                    title="sinopsis">
             </input>
-
+            </div>
             <!--span ng-show="!crearPeliculasForm.$pristine &&crearPeliculasForm.sinopsis.$error.required">La descripcion de la pelicula es requerida</--span-->
         </fieldset>
 
 
 
         <fieldset class="form-group">
-            Directores:
+            <label  class="col-lg-2 control-label">Directores:</label>
+            <div class="col-lg-10">
             <input ng-model="seleccionada.directores" class="form-control"
                    name="directores" ng-value="seleccionada.directores" title="Directores"
                    placeholder="Ingrese el/los directores de la pelicula">
             </input>
+                </div>
         </fieldset>
 
         <fieldset class="form-group">
-            Actores: <input ng-model="seleccionada.actores" class="form-control"
+            <label class="col-lg-2 control-label"> Actores:</label>
+            <div class="col-lg-10">
+            <input ng-model="seleccionada.actores" class="form-control"
                             name="actores" placeholder="Actores principales" title="Actores"
                             ng-value="seleccionada.actores">
             </input>
+            </div>
         </fieldset>
 
         <fieldset class="form-group">
-            Duracion:
+            <label class="col-lg-2 control-label"> Duracion:</label>
+            <div class="col-lg-10">
             <input ng-model="seleccionada.duracion" class="form-control" name="duracion"
                    placeholder="120 min" title="Duracion"  ng-value="seleccionada.duracion">
             </input>
+            </div>
         </fieldset>
 
         <fieldset class="form-group">
-            Año de estreno: <input ng-model="seleccionada.fecha" class="form-control" name="fecha"
+            <label class="col-lg-2 control-label">  Año de estreno:</label>
+            <div class="col-lg-10">
+            <input ng-model="seleccionada.fecha" class="form-control" name="fecha"
                                    ng-value="seleccionada.fecha"
                                    placeholder="Año de estreno"   title="fecha" />
-
-        </fieldset>
-
-
-
-        <fieldset class="form-group">
-            Plabras claves:
-        <textarea ng-model="seleccionada.referencias" class="form-control"
-                  name="referencias" placeholder="ingrese, palabras, claves"
-                  title="referencias">
-        </textarea>
-
+        </div>
         </fieldset>
 
         <fieldset class="form-group">
-            <input type="submit" class="btn btn-primary pull-right" value="Crear pelicula"
-                   ng-click="showAlert($event)" ng-disabled="!editarPeliculasForm.$valid" />
+            <label class="col-lg-2 control-label"> URL del poster:</label>
+            <div class="col-lg-10">
+                <input ng-model="seleccionada.urlFoto" class="form-control" name="urlFoto"
+                       ng-value="seleccionada.urlFoto"
+                         title="fecha"/>
+                <img  ng-src="{{seleccionada.urlFoto}}" with="200" height="200" class="img-responsive"/>
+            </div>
+        </fieldset>
 
-            <button type="button" class="btn btn-danger btn-lg" mw-confirm-click="editCtrl.deletePelicula()" mw-confirm-click-message="Eliminar pelicula de forma permanente?">
-                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Eliminar
+        <fieldset class="form-group">
+            <label class="col-lg-2 control-label"> Plabras claves:</label>
+            <div class="col-lg-10">
+            <input ng-model="palabra" class="form-control"
+                      name="referencias"  placeholder="magia ciencia ficcion"
+                      title="referencias">
+            </input>
+                <href ng-click="editCtrl.agregarPalabraClave()" class="btn btn-primary pull-left" >Ingresar palabra </href>
+            </div>
+        </fieldset>
+
+        <div class=" form-group col-xs-10 ">
+            <div   ng-repeat=" p in palabrasClave">
+                <button class="btn-lg btn-info pull-left" ng-click="editCtrl.eliminarPalabraClave(p)">
+                    <h5 class="palabraClave">{{  p  }}
+                        <span class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
+                    </h5>
+                </button>
+           </div>
+        </div>
+
+
+        <fieldset class="form-group col-lg-2">
+            <div class=" pull-left ">
+            <button type="button" class=" btn btn-danger btn-lg pull-left" mw-confirm-click="editCtrl.deletePelicula()" mw-confirm-click-message="Eliminar pelicula de forma permanente?">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
             </button>
+            </div>
+        </fieldset>
+
+
+        <fieldset class="form-group ">
+            <button type="submit" class="btn-lg btn-success pull-right"
+                   ng-click="showAlert($event)" ng-disabled="!editarPeliculasForm.$valid" >
+            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+            </button>
+
 
         </fieldset>
 

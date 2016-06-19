@@ -76,15 +76,7 @@
 
         var pelis = this;
         this.peliculas =  [ ];
-        this.mostrarBotonIngreso=function() {
-
-            if (googleIngreso())
-            {  console.log("ingreso retorno falseweeeeeeeeeee");
-                return false;}
-            else{
-                console.log("no ingreso");
-                return true;}
-        };
+       
         this.hoveringOver = function(value) {
             this.overStar = value;
         };
@@ -215,6 +207,7 @@
     app.controller('EditController', ['$http', '$scope','datos','$location','$uibModal', function($http,$scope,datos,$location,$uibModal){
         this.peliId = datos.getDatos();
         var editar=this;
+        $scope.palabrasClave = [];
         $scope.seleccionada = {};
 
         $http({
@@ -222,13 +215,15 @@
             url: urlServer + '/api/movie/'+editar.peliId
         }).then(function successCallback(response) {
             $scope.seleccionada  = response.data;
+            $scope.palabrasClave = $scope.seleccionada.referencias;
         }, function errorCallback(response) {
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
+            
         });
 
         //inicializo un objeto en los datos de formulario
         this.editPelicula = function(){
+            $scope.seleccionada.referencias=$scope.palabrasClave;
+
             $http.put(urlServer+'/api/movie/'+editar.peliId, $scope.seleccionada).success(function(res){
                 var modalInstance = $uibModal.open({
                     animation: true,
@@ -256,6 +251,29 @@
             });
         };
 
+
+
+        this.agregarPalabraClave = function (p) {
+
+            var existe = false;
+            for (var i = 0; i < $scope.palabrasClave.length; i++)
+                if ($scope.palabrasClave[i] == $scope.palabra)
+                    existe = true;
+
+            if (!existe)
+                $scope.palabrasClave.push($scope.palabra);
+
+
+        };
+
+
+        this.eliminarPalabraClave=function(palabra){
+
+            var pos = $scope.palabrasClave.indexOf(palabra);
+            $scope.palabrasClave.splice(pos,1);
+
+
+        };
     }]);
 
 
@@ -490,6 +508,7 @@
                 self.pelicula.duracion=response.data.Runtime;
                 self.pelicula.fecha=response.data.Year;
                 self.pelicula.urlFoto=response.data.Poster;
+                $scope.mostrar=true;
                 $log.log(response);
             });
 
@@ -497,7 +516,7 @@
 
 
         $scope.showAlert = function(ev) {
-            window.alert("pelicula creada");
+              window.alert("pelicula creada");
         };
 
         self.addPelicula = function(flag){
@@ -506,6 +525,12 @@
             if(flag) {
                 $http.post(urlServer + '/api/movies', self.pelicula).success(function (res) {
 
+                    self.pelicula = {};
+                    $scope.palabrasClave = [];
+                    $scope.peliculaReferencia.Title=" ";
+                    $scope.peliculaReferencia.Poster=" ";
+                    $scope.palabra=" ";
+                    $scope.mostrar=false;
                 });
             }
         };
