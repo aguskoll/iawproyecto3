@@ -29,7 +29,8 @@ exports.buscarRelacionadas=function(req, res) {
             var salida = new Array();
             var suficiente=false;
         if(pelicula!=null) {
-            var palabras = pelicula.referencias.toString().split(' ');
+            var palabras = pelicula.referencias;
+            console.log("palabras de la peli a busc "+palabras);
             var i = 0;
 
             var puntero = 0;
@@ -37,7 +38,9 @@ exports.buscarRelacionadas=function(req, res) {
 
                 var j = 0;
                 var relaciona = false;
-                var palabrasMovie = movies[i].referencias.toString().split(' ');
+              //  var palabrasMovie = movies[i].referencias.toString().split(' ');
+                var palabrasMovie = movies[i].referencias;
+                console.log("palabras de la otra peli "+palabrasMovie);
                 if(pelicula.id!=movies[i].id) {
                     for (j; j < palabras.length && !relaciona; j++) {
                         var k = 0;
