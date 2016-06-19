@@ -105,7 +105,6 @@
         this.open = function (peli) {
           var modalInstance = $uibModal.open({
               animation: true,
-              size: 'lg',
               templateUrl: 'vistas/paginas/peliculas/peli.html',
               controller: 'ModalInstanceCtrl',
               controllerAs: 'modalCtrl',

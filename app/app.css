@@ -78,3 +78,8 @@ form input.ng-invalid.ng-touched {
   /* Use the Roboto font that is loaded in the <head> */
   font-family: 'Roboto';
 }
+
+img.normal {
+  height: 320px;
+  width: 300px;
+}
