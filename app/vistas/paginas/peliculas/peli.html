@@ -40,9 +40,6 @@
     <!-- /seleccionada-->
 
     <!-- Relacionadas -->
-
-
-    <!-- Relacionadas -->
     <div class="row">
 
                 <div class="col-lg-12">
@@ -51,11 +48,10 @@
 
                 <div class="col-sm-3 col-xs-6" ng-repeat=" peli in relacionadas">
                     <h5>{{peli.title}}</h5>
-                    <div ng-controller="MoviesController as mCtrl">
-                        <a href="#" ng-click="mCtrl.open(peli._id)">
+
+                        <a ng-click="modalCtrl.change(peli._id)">
                             <img ng-src="{{peli.urlFoto}}" width="500" height="300" class="img-responsive"/>
                         </a>
-                        </div>
                 </div>
             </div>
     <!-- /Relacionadas -->

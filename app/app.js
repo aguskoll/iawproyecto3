@@ -128,22 +128,42 @@
         $scope.puedeVotar=false;
         $scope.relacionadas=null;
         $scope.mensaje=null;
+        var con = this;
+        this.peliId = peliID;
         var palabrasClave=new Array();
 
-        $http({
-            method: 'GET',
-            url: urlServer + '/api/movie/'+peliID
-        }).then(function successCallback(response) {
-            $scope.seleccionada  = response.data;
-            $scope.puedeVotar =  googleIngreso();
-        }, function errorCallback(response) {
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
-        });
+        this.change= function(id){
+            con.peliId = id;
+            con.load();
+        };
+
+        this.load = function () {
+            $http({
+                method: 'GET',
+                url: urlServer + '/api/movie/' + con.peliId
+            }).then(function successCallback(response) {
+                $scope.seleccionada = response.data;
+                $scope.puedeVotar = googleIngreso();
+            }, function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+            });
+
+            $http({
+                method: 'GET',
+                url: urlServer + '/api/movies/relacionadas/' + con.peliId
+            }).then(function successCallback(response) {
+                $scope.relacionadas = response.data;
+                console.log($scope.relacionadas);
+
+            }, function errorCallback(response) {
+                console.log("error al obetener relacionadas");
+            });
+        };
 
         this.setRating = function(valor){
             console.log(valor);
-            return $http.put(getUrlServer() + '/user/movie/calificate/' + peliID, {
+            return $http.put(getUrlServer() + '/user/movie/calificate/' + con.peliId, {
                 valoracion: valor
             });
 
@@ -153,19 +173,7 @@
             $uibModalInstance.close();
         };
 
-            $http({
-                method: 'GET',
-                url: urlServer + '/api/movies/relacionadas/'+peliID
-            }).then(function successCallback(response) {
-                $scope.relacionadas=response.data;
-
-            }, function errorCallback(response) {
-                console.log("error al obetener relacionadas");
-            });
-
-
-
-
+        this.load();
     }]);
 
     //Controlador para manejar los filtros y visualizacion de peliculas
