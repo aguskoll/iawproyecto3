@@ -264,7 +264,6 @@
             var filtro = filtro || '';
             if(filtro == '') {
                 out = input;
-                //$log.log(input);
             }else {
                 angular.forEach(input, function (peli) {
                     switch (categoria) {
@@ -301,20 +300,20 @@
         var myInterceptor = {
             request: function(config) {
                 var token = auth.getToken();
+                var tokenU = auth.getUserToken();
                 if(config.url.indexOf(getUrlServer()+'/api') === 0 && token) {
                     config.headers.Authorization = token;
 
                 };
 
                 if(config.url.indexOf(getUrlServer()+'/user') === 0 && token) {
-                    config.headers.Authorization = token;
 
+                    config.headers.Authorization = tokenU;
                 };
                 return config;
             },
             response: function(response) {
                 if(response.config.url.indexOf(getUrlServer()+'/api/authenticate') === 0 && response.data.token) {
-                    $log.log('entro ' + response.data.token);
                     auth.saveToken(response.data.token)
                 };
                 return response;
@@ -325,7 +324,7 @@
     }]);
 
 
-    app.service('user',['$http','auth',function($http,auth){
+    app.service('user',['$http','auth','$window',function($http,auth){
 
         this.login = function(username, password) {
            return $http.post(getUrlServer() + '/api/authenticate', {
@@ -352,16 +351,20 @@
             return $window.localStorage['jwtToken'];
         };
 
+        this.getUserToken = function() {
+            return $window.localStorage['googleToken'];
+        };
+
         this.isAuthed = function() {
             var token = self.getToken();
+            var tokenU = self.getUserToken();
             if(token) {
                 var params = self.parseJwt(token);
-                if(params.hasOwnProperty('iss')){
-                    return true;
-                }else {
-                    return Math.round(new Date().getTime() / 1000) <= params.exp;
+                    return ( (Math.round(new Date().getTime() / 1000) <= params.exp));
                 }
-            }else {
+            else if(tokenU){
+                return googleIngreso();
+            }else{
                 return false;
             }
         };
@@ -370,11 +373,7 @@
             var token = self.getToken();
             if(token) {
                 var params = self.parseJwt(token);
-                if(params.hasOwnProperty('iss')){
-                    return false;
-                }else {
-                    return Math.round(new Date().getTime() / 1000) <= params.exp;
-                }
+                   return Math.round(new Date().getTime() / 1000) <= params.exp;
             }else {
                 return false;
             }
@@ -382,6 +381,7 @@
 
         this.logout = function() {
             $window.localStorage.removeItem('jwtToken');
+            signOut();
         }
     }]);
 
