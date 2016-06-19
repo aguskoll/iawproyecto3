@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
 
 var movieSchema = new Schema({
     title:    String ,
-    fecha:    Date ,
+    fecha:    String ,
     directores: [String ],
     actores:  [String],
     sinopsis: String,
