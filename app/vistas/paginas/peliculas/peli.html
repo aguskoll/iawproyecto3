@@ -22,6 +22,12 @@
 
         <div class="col-md-8">
             <img ng-src="{{seleccionada.urlFoto}}" class="img-responsive" />
+            <h3>Palabras clave</h3>
+          <div ng-repeat="p in seleccionada.referencias">
+
+              <label class="pull-right control-label">&nbsp; {{p}} &nbsp;</label>
+
+          </div>
         </div>
 
         <div class="col-md-4">
@@ -35,6 +41,7 @@
             <ul ng-repeat="actor in seleccionada.actores">
                 <li>{{actor}}</li>
             </ul>
+
         </div>
 
     </div>
@@ -48,7 +55,7 @@
                 </div>
 
                 <div class="col-sm-3 col-xs-6" ng-repeat=" peli in relacionadas">
-                    <h5>{{peli.title}}</h5>
+                    <h5  ng-click="modalCtrl.change(peli._id)">{{peli.title}}</h5>
 
                         <a ng-click="modalCtrl.change(peli._id)">
                             <img ng-src="{{peli.urlFoto}}" width="500" height="300" class="img-responsive"/>
