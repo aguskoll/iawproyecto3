@@ -64,14 +64,14 @@
     </nav>
 
     <!-- Peliculas -->
-    <div class="col-md-3 col-sm-6 miniatura"
+    <div class="col-md-3 col-sm-6 miniatura repeated-item"
          dir-paginate="peli in moviesCtrl.peliculas|orderBy:showCtrl.getClave():showCtrl.getInvertir()|dinamicFilter:filtroSeleccionado:filtro|itemsPerPage:4">
         <div class="thumbnail">
             <img ng-src="{{peli.urlFoto}}" class="normal img-responsive"/>
-            <div class="caption">
+            <div class="caption-full">
                 <h2>{{peli.title}} <a href="#/editarPelicula" ng-click="moviesCtrl.save(peli._id)"> <span ng-show="auth.isAdmin()" class="glyphicon glyphicon-edit mysize"></span></a></h2>
-                <h3>{{peli.valoracion || 'S/V'}}</h3>
-                <p>{{peli.sinopsis | limitTo : 20}}...</p>
+                <h3>{{peli.valoracion || 's/c'}} <span ng-show="peli.valoracion" lass="glyphicon glyphicon-star" aria-hidden="true"></span> </h3>
+                <p>{{peli.sinopsis | limitTo : 100}}...</p>
                 <p>
                     <a class="btn btn-default" ng-click="moviesCtrl.open(peli._id)">Mas informacion</a>
                 </p>

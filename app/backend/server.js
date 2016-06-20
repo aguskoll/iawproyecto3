@@ -141,7 +141,7 @@ function ensureAuthorizedUser(req, res, next) {
             if (!error && response.statusCode == 200) {
                 req.decoded = body;
                 next();
-            }else{console.log(error);
+            }else{
                 return res.status(403).send({
                     success: false,
                     message: error,
