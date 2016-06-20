@@ -6,6 +6,7 @@
 
 body {
     padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+
 }
 
 
@@ -34,3 +35,9 @@ span.mysize {font-size: 0.7em;}
 
 }
 
+#nav-custom{
+
+    background: #2196f3;
+    color: #FFFFFF;
+
+}
