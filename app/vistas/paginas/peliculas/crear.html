@@ -50,7 +50,7 @@
             <label class="col-lg-2 control-label"> Actores:</label>
             <div class="col-lg-10">
                 <input ng-model="crearCtrl.pelicula.actores" class="form-control"
-                       name="actores" placeholder="Daniel Radcliffe" title="Actores"
+                       name="actores" placeholder="Actores" title="Actores"
                        ng-value="peliculaReferencia.Actors">
                 </input>
             </div>
@@ -61,7 +61,7 @@
             <label class="col-lg-2 control-label"> Duracion:</label>
             <div class="col-lg-10">
                 <input ng-model="crearCtrl.pelicula.duracion" class="form-control" name="duracion"
-                       placeholder="120 min" title="Duracion"  ng-value="peliculaReferencia.Runtime">
+                       placeholder="Duracion en minutos" title="Duracion"  ng-value="peliculaReferencia.Runtime">
                 </input>
             </div>
         </fieldset>
@@ -71,7 +71,7 @@
             <div class="col-lg-10">
                 <input ng-model="crearCtrl.pelicula.fecha" class="form-control" name="fecha"
                        ng-value="peliculaReferencia.Year"
-                       placeholder="1990"   title="fecha"/>
+                       placeholder="Año de estreno"   title="fecha"/>
             </div>
         </fieldset>
 
@@ -80,7 +80,7 @@
             <div class="col-lg-10">
                 <input ng-model="crearCtrl.pelicula.urlFoto" class="form-control" name="urlFoto"
                        ng-value="peliculaReferencia.Poster"
-                       placeholder="http://ia.media-imdb.com/images/M/MV5BMjM5OTQ1MTY5Nl5BMl5BanBnXkFtZTgwMjM3NzMxODE@._V1_SX300.jpg"   title="fecha" />
+                       placeholder="http://img.jpg"   title="fecha" />
                 <img ng-model="mostrar" ng-show="mostrar" ng-src="{{peliculaReferencia.Poster}}" with="200" height="200" class="img-responsive"/>
             </div>
         </fieldset>
@@ -90,8 +90,7 @@
             <label class="col-lg-2 control-label"> Plabras claves:</label>
             <div class="col-lg-10">
                 <input ng-model="palabra" class="form-control"
-                       name="palabras" placeholder="magia ciencia ficcion"
-                       title="palabras"/>
+                       name="palabras" placeholder="Palabra clave" title="palabras"/>
 
                 <href ng-click="crearCtrl.agregarPalabraClave()" class="btn btn-primary pull-left" >Ingresar palabra </href>
             </div>

@@ -476,6 +476,7 @@
                 $scope.palabrasClave.push($scope.palabra);
 
             self.pelicula.referencias = $scope.palabrasClave;
+            $scope.palabra='';
         };
 
 
@@ -512,7 +513,7 @@
                 self.pelicula.fecha=response.data.Year;
                 self.pelicula.urlFoto=response.data.Poster;
                 $scope.mostrar=true;
-                $log.log(response);
+               // $log.log(response);
             });
 
         };
