@@ -124,12 +124,17 @@
         $scope.puedeVotar=false;
         $scope.relacionadas=null;
         $scope.mensaje=null;
+        $scope.isEnabled = true;
+        $scope.rate;
         var con = this; 
         this.peliId = peliID;
         var palabrasClave=new Array();
 
         this.change= function(id){
             con.peliId = id;
+            $scope.mensaje=null;
+            $scope.isEnabled = true;
+            $scope.rate = 0;
             con.load();
         };
 
@@ -294,7 +299,7 @@
                 out = input;
             }else {
                 filtro=filtro.charAt(0).toUpperCase()+filtro.substr(1);
-                console.log(filtro);
+//                console.log(filtro);
 
                 angular.forEach(input, function (peli) {
                     switch (categoria) {

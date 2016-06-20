@@ -65,7 +65,7 @@
 
     <!-- Peliculas -->
     <div class="col-md-3 col-sm-6 miniatura repeated-item"
-         dir-paginate="peli in moviesCtrl.peliculas|orderBy:showCtrl.getClave():showCtrl.getInvertir()|dinamicFilter:filtroSeleccionado:filtro|itemsPerPage:8">
+         dir-paginate="peli in moviesCtrl.peliculas|orderBy:showCtrl.getClave():showCtrl.getInvertir()|dinamicFilter:filtroSeleccionado:filtro|itemsPerPage:4">
         <div class="thumbnail myDiv">
             <div class="hovereffect">
                 <img ng-src="{{peli.urlFoto}}" class="normal img-responsive"/>

@@ -11,7 +11,7 @@
         </h3>
 
          <h3 ng-show="puedeVotar">
-               <div ng-init="isEnabled = true">
+               <div     >
                     <uib-rating read-only="!isEnabled" ng-model="rate" max="5" on-hover="moviesCtrl.hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three','four','five']" aria-labelledby="default-rating" ng-click="!isEnabled||modalCtrl.setRating(rate);isEnabled=false"></uib-rating>
                    <div ng-hide="mensaje==null"> {{mensaje}}</div>
                </div>
