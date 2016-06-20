@@ -29,6 +29,10 @@
                 templateUrl: 'vistas/paginas/usuario/login.html'
 
             });
+            $routeProvider.when('/readme', {
+                templateUrl: 'vistas/paginas/readme.html'
+
+            });
             $routeProvider.otherwise({
                
                         redirectTo:'/index.html'
