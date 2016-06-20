@@ -6,7 +6,7 @@
     //Variables de ambiente
 
    var app= angular.module('library',
-       ['ngRoute','angularUtils.directives.dirPagination','ui.bootstrap']);
+       ['ngRoute','angularUtils.directives.dirPagination','ui.bootstrap','ngAnimate']);
 
     app.config(['$routeProvider', '$httpProvider',
         function($routeProvider, $httpProvider) {
@@ -288,6 +288,9 @@
             if(filtro == '') {
                 out = input;
             }else {
+                filtro=filtro.charAt(0).toUpperCase()+filtro.substr(1);
+                console.log(filtro);
+
                 angular.forEach(input, function (peli) {
                     switch (categoria) {
                         case "actores":
@@ -324,7 +327,6 @@
             request: function(config) {
                 var token = auth.getToken();
                 var tokenU = auth.getUserToken();
-                console.log('interceptor: ',tokenU);
                 if(config.url.indexOf(getUrlServer()+'/api') === 0 && token) {
                     config.headers.Authorization = token;
                 };

@@ -10,7 +10,7 @@ exports.findAllMovies = function(req, res) {
     Movie.find(function(err, movies) {
         if(err) return res.send(500, err.message);
 
-        console.log('GET /movies');
+      //  console.log('GET /movies');
         res.status(200).jsonp(movies);
     });
 };
@@ -50,7 +50,7 @@ exports.buscarRelacionadas=function(req, res) {
                                 salida[puntero] = movies[i];
                                 puntero++;
                                 relaciona = true;
-                                console.log("agregue relacionada " + palabras[j]);
+                             //   console.log("agregue relacionada " + palabras[j]);
                             }
                         }
                     }
@@ -58,7 +58,7 @@ exports.buscarRelacionadas=function(req, res) {
                 if(salida.length>3)
                     suficiente=true;
             }
-            console.log('Relacionadas /movies');
+           // console.log('Relacionadas /movies');
         }
 
              res.status(200).jsonp(salida);
@@ -68,25 +68,25 @@ exports.buscarRelacionadas=function(req, res) {
         });
 };
 
-//GET - Return a movie with specified ID
+//GET - Retornar una
 exports.findById = function(req, res) {
     Movie.findById(req.params.id, function(err, movie) {
         if(err) return res.status(500).send(err.message);
 
-        console.log('GET /movie/' + req.params.id);
+     //   console.log('GET /movie/' + req.params.id);
         res.status(200).jsonp(movie);
     });
 };
 
-//POST - Insert a new movie in the DB
+//POST - Crear pelicula
 exports.addMovie = function(req, res) {
-    console.log('POST');
-    console.log(req.body);
+//    console.log('POST');
+//    console.log(req.body);
     if(typeof req.body.title == 'undefined' || req.body.title=='' || req.body.title==null){
         return res.status(400).send('falta el titulo');
     }
         var mov = new Movie({
-            title:    req.body.title,
+            title:    req.body.title.charAt(0).toUpperCase()+req.body.title.substr(1),
             fecha:    req.body.fecha,
             directores: req.body.directores,
             actores:  req.body.actores,
@@ -106,14 +106,14 @@ exports.addMovie = function(req, res) {
     });
 };
 
-//PUT - Update a register already exists
+//PUT - Actualizar pelicula
 exports.updateMovie = function(req, res) {
-    console.log('put '+req.body);
+   // console.log('put '+req.body);
     if(typeof req.body.title == 'undefined' || req.body.title=='' || req.body.title==null){
         return res.status(400).send('falta el titulo');
     };
     Movie.findById(req.params.id, function(err, movie) {
-        movie.title = req.body.title;
+        movie.title = req.body.title.charAt(0).toUpperCase()+req.body.title.substr(1);
         movie.fecha = req.body.fecha;
         movie.directores = req.body.directores;
         movie.actores = req.body.actores;
@@ -132,7 +132,7 @@ exports.updateMovie = function(req, res) {
     });
 };
 
-//PUT - Update a register already exists
+//PUT - Calificar
 exports.calificateMovie = function(req, res) {
 
         var respuesta = JSON.parse(req.decoded);
@@ -174,7 +174,7 @@ exports.calificateMovie = function(req, res) {
 };
 
 
-//DELETE - Delete a movie with specified ID
+//DELETE - Borrar pelicula
 exports.deleteMovie = function(req, res) {
     Movie.findById(req.params.id, function(err, movie) {
         movie.remove(function(err) {
