@@ -1,6 +1,7 @@
 <!--div  ng-app="ModuloCrearPelicula"-->
-<h2 xmlns="http://www.w3.org/1999/html">Agregar una pelicula</h2>
-<div  ng-cloack>
+
+<div  ng-cloack class="container">
+    <h2 xmlns="http://www.w3.org/1999/html">Agregar una pelicula</h2>
     <form name="crearPeliculasForm" ng-controller="CrearPeliculas as crearCtrl" class="form-horizontal" role="form"
           ng-submit="crearPeliculasForm.$valid&&crearCtrl.addPelicula(true)" novalidate>
 
@@ -60,7 +61,7 @@
             <label class="col-lg-2 control-label"> Duracion:</label>
             <div class="col-lg-10">
                 <input ng-model="crearCtrl.pelicula.duracion" class="form-control" name="duracion"
-                       placeholder="Duracion en minutos" title="Duracion"  ng-value="peliculaReferencia.Runtime">
+                       placeholder="120 min" title="Duracion"  ng-value="peliculaReferencia.Runtime">
                 </input>
             </div>
         </fieldset>
@@ -70,7 +71,7 @@
             <div class="col-lg-10">
                 <input ng-model="crearCtrl.pelicula.fecha" class="form-control" name="fecha"
                        ng-value="peliculaReferencia.Year"
-                       placeholder="Año de estreno"   title="fecha"/>
+                       placeholder="1990"   title="fecha"/>
             </div>
         </fieldset>
 
@@ -89,7 +90,7 @@
             <label class="col-lg-2 control-label"> Plabras claves:</label>
             <div class="col-lg-10">
                 <input ng-model="palabra" class="form-control"
-                       name="palabras" placeholder="Palbra clave"
+                       name="palabras" placeholder="magia ciencia ficcion"
                        title="palabras"/>
 
                 <href ng-click="crearCtrl.agregarPalabraClave()" class="btn btn-primary pull-left" >Ingresar palabra </href>
@@ -112,8 +113,9 @@
 
 
 
-        <fieldset class="form-group">
-            <button type="submit" class="btn-lg btn-success pull-right" ng-disabled="!crearPeliculasForm.$valid">
+        <fieldset class="form-group botonAceptar">
+            <button type="submit" class="btn-lg btn-success pull-right"
+                    ng-click="showAlert($event)" ng-disabled="!crearPeliculasForm.$valid">
 
                 <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
 

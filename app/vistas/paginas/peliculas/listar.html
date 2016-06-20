@@ -1,7 +1,7 @@
 
 
 
-<div class="container" ng-controller="CarouselCtrl" id="slides_control">
+<div class="container fotosMuestra" ng-controller="CarouselCtrl" id="slides_control">
     <div>
         <uib-carousel interval="myInterval" active="activeSlide">
             <uib-slide ng-repeat="slide in slides" index="$index">
@@ -73,7 +73,7 @@
                 <h3>{{peli.valoracion || 'S/V'}}</h3>
                 <p>{{peli.sinopsis | limitTo : 20}}...</p>
                 <p>
-                    <a class="btn btn-default" ng-click="moviesCtrl.open(peli._id)">More Info</a>
+                    <a class="btn btn-default" ng-click="moviesCtrl.open(peli._id)">Mas informacion</a>
                 </p>
             </div>
         </div>
