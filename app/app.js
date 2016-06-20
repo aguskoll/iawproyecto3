@@ -146,7 +146,7 @@
                 url: urlServer + '/api/movies/relacionadas/' + con.peliId
             }).then(function successCallback(response) {
                 $scope.relacionadas = response.data;
-                console.log($scope.relacionadas);
+                //console.log($scope.relacionadas);
 
             }, function errorCallback(response) {
                 console.log("error al obetener relacionadas");
@@ -224,10 +224,9 @@
         this.editPelicula = function(){
             $scope.seleccionada.referencias=$scope.palabrasClave;
 
-            $http.put(urlServer+'/api/movie/'+editar.peliId, $scope.seleccionada).success(function(res){
+            $http.put(urlServer+'/api/movie/'+editar.peliId, $scope.seleccionada).then(function successCallback(res) {
                 var modalInstance = $uibModal.open({
                     animation: true,
-                    size: 'lg',
                     templateUrl: 'vistas/paginas/peliculas/peli.html',
                     controller: 'ModalInstanceCtrl',
                     controllerAs: 'modalCtrl',
@@ -237,6 +236,8 @@
                         }
                     }
                 });
+            }, function errorCallback(res) {
+                window.alert(res.data);
             });
         };
 
@@ -454,7 +455,7 @@
 
     }]);
 
-    app.controller('CrearPeliculas', ['$http','$scope','$log',function ($http,$scope,$log) {
+    app.controller('CrearPeliculas', ['$http','$scope','$log','$uibModal',function ($http,$scope,$log,$uibModal) {
 
 
         var self = this;
@@ -516,23 +517,30 @@
 
         };
 
-
-        $scope.showAlert = function(ev) {
-              window.alert("pelicula creada");
-        };
-
         self.addPelicula = function(flag){
 
                 self.pelicula.title = $scope.peliculaReferencia.Title;
             if(flag) {
-                $http.post(urlServer + '/api/movies', self.pelicula).success(function (res) {
-
+                $http.post(urlServer + '/api/movies', self.pelicula).then(function successCallback(res) {
                     self.pelicula = {};
                     $scope.palabrasClave = [];
                     $scope.peliculaReferencia.Title=" ";
                     $scope.peliculaReferencia.Poster=" ";
                     $scope.palabra=" ";
                     $scope.mostrar=false;
+                    var modalInstance = $uibModal.open({
+                        animation: true,
+                        templateUrl: 'vistas/paginas/peliculas/peli.html',
+                        controller: 'ModalInstanceCtrl',
+                        controllerAs: 'modalCtrl',
+                        resolve: {
+                            peliID: function () {
+                                return res.data._id;
+                            }
+                        }
+                    });
+                }, function errorCallback(res) {
+                    window.alert(res.data);
                 });
             }
         };

@@ -60,10 +60,7 @@ exports.buscarRelacionadas=function(req, res) {
             }
            // console.log('Relacionadas /movies');
         }
-
              res.status(200).jsonp(salida);
-
-
 
         });
 };
@@ -97,11 +94,11 @@ exports.addMovie = function(req, res) {
             refe: req.body.refe,
             referencias:  req.body.referencias,
             urlFoto:req.body.urlFoto
-            
+
     });
 
     mov.save(function(err, movie) {
-        if(err) return res.send(500, err.message);
+        if(err) return res.status(500).send(err.message);
         res.status(200).jsonp(movie);
     });
 };
