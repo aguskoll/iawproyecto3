@@ -49,10 +49,10 @@
 
                 <i class="glyphicon glyphicon-search"></i>
                 <div class="form-group">
-                    <input type="text" ng-model="filtro" class="form-control" placeholder="filtrar">
+                    <input uib-tooltip="Filtro" type="text" ng-model="filtro" class="form-control" placeholder="filtrar">
                 </div>
 
-                <select ng-model='filtroSeleccionado' class='form-control'>
+                <select uib-tooltip="Campo" ng-model='filtroSeleccionado' class='form-control'>
                     <option value="" selected>Titulo</option>
                     <option value="directores">Director</option>
                     <option value="actores">Actor</option>
@@ -76,7 +76,7 @@
             </div>
 
             <div class="caption-full">
-                <h2>{{peli.title}} <a href="#/editarPelicula" ng-click="moviesCtrl.save(peli._id)"> <span ng-show="auth.isAdmin()" class="glyphicon glyphicon-edit mysize"></span></a></h2>
+                <h2>{{peli.title}} <a uib-tooltip="Editar" href="#/editarPelicula" ng-click="moviesCtrl.save(peli._id)"> <span ng-show="auth.isAdmin()" class="glyphicon glyphicon-edit mysize"></span></a></h2>
                 <p>{{peli.sinopsis | limitTo : 100}}...</p>
                 <p>
                     <a class="btn btn-default" ng-click="moviesCtrl.open(peli._id)">Mas informacion</a>

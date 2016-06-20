@@ -94,14 +94,13 @@
         <div class="col-sm-6 pull-right">
 
 
-                <button type="button" class=" btn btn-danger btn-lg  pull-right" mw-confirm-click="editCtrl.deletePelicula()" mw-confirm-click-message="Eliminar pelicula de forma permanente?">
+                <button uib-tooltip="Eliminar" type="button" class=" btn btn-danger btn-lg  pull-right" mw-confirm-click="editCtrl.deletePelicula()" mw-confirm-click-message="Eliminar pelicula de forma permanente?">
                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                 </button>
 
 
 
-                <button type="submit" class="btn btn-lg btn-success pull-right"
-                        ng-click="showAlert($event)" ng-disabled="!editarPeliculasForm.$valid" >
+                <button uib-tooltip="Guardar" type="submit" class="btn btn-lg btn-success pull-right" ng-disabled="!editarPeliculasForm.$valid" >
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                 </button>
         </div>
