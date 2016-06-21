@@ -86,18 +86,20 @@
         };
 
         $scope.$on('$routeChangeSuccess', function() {
-            $http({
-                method: 'GET',
-                url: urlServer + '/api/movies'
-            }).then(function successCallback(response) {
-                pelis.peliculas = response.data;
-            }, function errorCallback(response) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
-            });
+            pelis.reload();
         });
 
-
+    this.reload = function(){
+        $http({
+            method: 'GET',
+            url: urlServer + '/api/movies'
+        }).then(function successCallback(response) {
+            pelis.peliculas = response.data;
+        }, function errorCallback(response) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+        });
+    };
         this.open = function (peli) {
           var modalInstance = $uibModal.open({
               animation: true,
@@ -110,6 +112,10 @@
                   }
               }
           });
+
+            modalInstance.result.finally(function(){
+               pelis.reload();
+            });
         };
 
         this.save = function(id){
