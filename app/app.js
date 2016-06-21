@@ -80,7 +80,7 @@
 
         var pelis = this;
         this.peliculas =  [ ];
-       
+
         this.hoveringOver = function(value) {
             this.overStar = value;
         };
@@ -113,8 +113,10 @@
               }
           });
 
-            modalInstance.result.finally(function(){
-               pelis.reload();
+            modalInstance.result.then(function (res) {
+                if(res){
+                    pelis.reload();
+                }
             });
         };
 
@@ -132,6 +134,7 @@
         $scope.mensaje=null;
         $scope.isEnabled = true;
         $scope.rate;
+        $scope.votFlag = 0;
         var con = this; 
         this.peliId = peliID;
         var palabrasClave=new Array();
@@ -181,8 +184,8 @@
 
         };
 
-        this.ok = function () {
-            $uibModalInstance.close();
+        this.ok = function (flag) {
+            $uibModalInstance.close(flag);
         };
 
         this.load();
